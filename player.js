@@ -38,3 +38,7 @@ function ajiMain() {
     }
   }, 1000 / AIJPACK_FPS);
 }
+
+function ajiDrawText(text, x, y) {
+  ajiContext.fillText(text, x, y);
+}
