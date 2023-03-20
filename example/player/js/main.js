@@ -1,4 +1,5 @@
 let x;
+let a = 0;
 
 function setup() {
   console.log("Hello, world!");
@@ -11,7 +12,9 @@ function loop() {
   ajiContext.font = "20pt sans-serif";
   ajiContext.fillStyle = "#fff";
   ajiContext.fillText("Hello, world!", x, 120);
-  x--;
+  ajiContext.fillText(a, 10, 30);
+  x -= 3;
+  a++;
   if (x < -300) {
     x = 330;
   }
