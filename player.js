@@ -6,7 +6,7 @@ Licensed under the MIT License
 
 const AJIPACK_WIDTH = 320;
 const AJIPACK_HEIGHT = 240;
-const AIJPACK_FPS = 33.0;
+const AJIPACK_FPS = 34.0;
 let ajiCanvas, ajiContext;
 
 window.onload = function () {
@@ -36,7 +36,7 @@ function ajiMain() {
     if (typeof loop == "function") {
       loop();
     }
-  }, 1000 / AIJPACK_FPS);
+  }, 1000 / AJIPACK_FPS);
 }
 
 function ajiDrawText(text, x, y) {
