@@ -42,6 +42,10 @@ function ajiMain() {
   requestAnimationFrame(ajiMain);
 }
 
+function ajiSetFillColor(color) {
+  ajiContext.fillStyle = color;
+}
+
 function ajiFillRect(x, y, w, h) {
   ajiContext.fillRect(x, y, w, h);
 }

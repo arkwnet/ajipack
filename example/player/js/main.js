@@ -8,10 +8,10 @@ function setup() {
 }
 
 function loop() {
-  ajiContext.fillStyle = "#666666";
+  ajiSetFillColor("#666666");
   ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
   ajiContext.font = "20pt sans-serif";
-  ajiContext.fillStyle = "#fff";
+  ajiSetFillColor("#fff");
   ajiDrawText("Hello, world!", x, 120);
   ajiDrawText(count, 10, 30);
   ajiDrawText("FPS: " + fps, 10, 60);
