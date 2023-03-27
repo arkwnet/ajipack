@@ -6,7 +6,8 @@ Licensed under the MIT License
 
 const AJIPACK_WIDTH = 320;
 const AJIPACK_HEIGHT = 240;
-const AJIPACK_FPS = 34.0;
+const AJIPACK_FPS = 33.0;
+let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext;
 
 window.onload = function () {
@@ -31,12 +32,14 @@ function ajiInit() {
 }
 
 function ajiMain() {
-  setTimeout(function () {
-    requestAnimationFrame(ajiMain);
+  const ajiNowTime = Date.now();
+  if (ajiNowTime - ajiDrawTime >= 1000 / AJIPACK_FPS) {
+    ajiDrawTime = ajiNowTime;
     if (typeof loop == "function") {
       loop();
     }
-  }, 1000 / AJIPACK_FPS);
+  }
+  requestAnimationFrame(ajiMain);
 }
 
 function ajiDrawText(text, x, y) {
