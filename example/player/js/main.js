@@ -9,7 +9,7 @@ function setup() {
 
 function loop() {
   ajiContext.fillStyle = "#666666";
-  ajiContext.fillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
+  ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
   ajiContext.font = "20pt sans-serif";
   ajiContext.fillStyle = "#fff";
   ajiDrawText("Hello, world!", x, 120);

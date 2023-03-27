@@ -42,6 +42,10 @@ function ajiMain() {
   requestAnimationFrame(ajiMain);
 }
 
+function ajiFillRect(x, y, w, h) {
+  ajiContext.fillRect(x, y, w, h);
+}
+
 function ajiDrawText(text, x, y) {
   ajiContext.fillText(text, x, y);
 }
