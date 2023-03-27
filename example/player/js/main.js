@@ -10,7 +10,7 @@ function setup() {
 function loop() {
   ajiSetFillColor("#666666");
   ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
-  ajiContext.font = "20pt sans-serif";
+  ajiSetFont("20pt sans-serif");
   ajiSetFillColor("#fff");
   ajiDrawText("Hello, world!", x, 120);
   ajiDrawText(count, 10, 30);

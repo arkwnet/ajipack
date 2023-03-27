@@ -46,6 +46,10 @@ function ajiSetFillColor(color) {
   ajiContext.fillStyle = color;
 }
 
+function ajiSetFont(font) {
+  ajiContext.font = font;
+}
+
 function ajiFillRect(x, y, w, h) {
   ajiContext.fillRect(x, y, w, h);
 }
