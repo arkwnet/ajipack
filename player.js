@@ -9,6 +9,7 @@ const AJIPACK_HEIGHT = 240;
 const AJIPACK_FPS = 33.0;
 let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext;
+let ajiBG = [new Image(), new Image(), new Image(), new Image()];
 
 window.onload = function () {
   ajiInit();
@@ -56,4 +57,12 @@ function ajiFillRect(x, y, w, h) {
 
 function ajiDrawText(text, x, y) {
   ajiContext.fillText(text, x, y);
+}
+
+function ajiSetBG(id, src) {
+  ajiBG[id].src = src;
+}
+
+function ajiDrawBG(id, x, y) {
+  ajiContext.drawImage(ajiBG[id], x, y, AJIPACK_WIDTH, AJIPACK_HEIGHT);
 }
