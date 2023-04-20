@@ -33,7 +33,11 @@ const template = Menu.buildFromTemplate([
         label: "新規作成",
         click: function (item, focusedWindow) {
           if (focusedWindow) {
-            focusedWindow.webContents.executeJavaScript("test()");
+            focusedWindow.webContents
+              .executeJavaScript("test()")
+              .then((result) => {
+                console.log(result);
+              });
           }
         },
       },

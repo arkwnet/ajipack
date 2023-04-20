@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     test() {
-      alert("Hello, world!");
+      return "Hello, world!";
     },
   },
 };
