@@ -29,6 +29,14 @@ const template = Menu.buildFromTemplate([
   {
     label: "ファイル",
     submenu: [
+      {
+        label: "新規作成",
+        click: function (item, focusedWindow) {
+          if (focusedWindow) {
+            focusedWindow.webContents.executeJavaScript("test()");
+          }
+        },
+      },
       isMac
         ? { role: "close", label: "ウィンドウを閉じる" }
         : { role: "quit", label: "終了" },
