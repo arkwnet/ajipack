@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
 import Editor from "./components/Editor.vue";
 
 export default {
@@ -10,9 +11,14 @@ export default {
   components: {
     Editor,
   },
+  mounted() {
+    ipcRenderer.on("test", () => {
+      this.test();
+    });
+  },
   methods: {
     test() {
-      return "Hello, world!";
+      ipcRenderer.send("test", "Hello, world!");
     },
   },
 };

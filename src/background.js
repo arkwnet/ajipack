@@ -1,9 +1,10 @@
 "use strict";
 
-import { app, Menu, protocol, BrowserWindow } from "electron";
+import { app, Menu, protocol, BrowserWindow, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
+let win;
 
 const appName = "Ajipack Studio";
 const isMac = process.platform === "darwin";
@@ -31,14 +32,8 @@ const template = Menu.buildFromTemplate([
     submenu: [
       {
         label: "新規作成",
-        click: function (item, focusedWindow) {
-          if (focusedWindow) {
-            focusedWindow.webContents
-              .executeJavaScript("test()")
-              .then((result) => {
-                console.log(result);
-              });
-          }
+        click: function () {
+          win.webContents.send("test", null);
         },
       },
       isMac
@@ -110,7 +105,7 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     title: appName,
@@ -160,6 +155,9 @@ app.on("ready", async () => {
     }
   }
   createWindow();
+  ipcMain.on("test", (event, message) => {
+    console.log(message);
+  });
 });
 
 // Exit cleanly on request from parent process in development mode.
