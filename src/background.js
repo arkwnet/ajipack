@@ -33,7 +33,7 @@ const template = Menu.buildFromTemplate([
       {
         label: "新規作成",
         click: function () {
-          win.webContents.send("test", null);
+          win.webContents.send("newProject", null);
         },
       },
       isMac
@@ -158,6 +158,7 @@ app.on("ready", async () => {
   ipcMain.on("test", (event, message) => {
     console.log(message);
   });
+  // win.webContents.openDevTools();
 });
 
 // Exit cleanly on request from parent process in development mode.

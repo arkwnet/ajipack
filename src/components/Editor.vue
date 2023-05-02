@@ -21,6 +21,11 @@ export default defineComponent({
   components: {
     Codemirror,
   },
+  data() {
+    return {
+      code: "// Ajipack Studio",
+    };
+  },
   setup() {
     const extensions = [javascript()];
     const view = shallowRef();
@@ -32,6 +37,11 @@ export default defineComponent({
       handleReady,
       log: console.log,
     };
+  },
+  methods: {
+    clear() {
+      this.code = "";
+    },
   },
 });
 </script>
