@@ -2,7 +2,6 @@
   <div class="editor">
     <codemirror
       v-model="code"
-      :style="{ height: '400px' }"
       :autofocus="true"
       :indent-with-tab="true"
       :tab-size="2"
@@ -45,3 +44,7 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+@import "../assets/sass/Editor";
+</style>
