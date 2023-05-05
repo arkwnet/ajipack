@@ -1,6 +1,7 @@
 "use strict";
 
-import { app, Menu, protocol, BrowserWindow, ipcMain } from "electron";
+const fs = require("fs");
+import { app, Menu, protocol, BrowserWindow, ipcMain, dialog } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -36,6 +37,25 @@ const template = Menu.buildFromTemplate([
           win.webContents.send("newProject", null);
         },
       },
+      {
+        label: "開く",
+        click: function () {
+          win.webContents.send("openProject", null);
+        },
+      },
+      {
+        label: "上書き保存",
+        click: function () {
+          win.webContents.send("saveProject", null);
+        },
+      },
+      {
+        label: "名前を付けて保存",
+        click: function () {
+          win.webContents.send("saveAsProject", null);
+        },
+      },
+      { type: "separator" },
       isMac
         ? { role: "close", label: "ウィンドウを閉じる" }
         : { role: "quit", label: "終了" },
@@ -155,6 +175,9 @@ app.on("ready", async () => {
     }
   }
   createWindow();
+  ipcMain.on("saveAsProject", (event, message) => {
+    saveAsProject(message);
+  });
   ipcMain.on("test", (event, message) => {
     console.log(message);
   });
@@ -174,4 +197,24 @@ if (isDevelopment) {
       app.quit();
     });
   }
+}
+
+async function saveAsProject(message) {
+  const result = await dialog.showSaveDialog(win, {
+    properties: ["openFile"],
+    filters: [
+      {
+        name: "Documents",
+        extensions: ["apf"],
+      },
+    ],
+  });
+  if (result.canceled) {
+    return;
+  }
+  await saveProcess(result.filePath, message);
+}
+
+async function saveProcess(filePath, message) {
+  fs.writeFileSync(filePath, JSON.stringify(message));
 }

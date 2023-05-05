@@ -22,6 +22,9 @@ export default {
     ipcRenderer.on("newProject", () => {
       this.newProject();
     });
+    ipcRenderer.on("saveAsProject", () => {
+      this.saveAsProject();
+    });
     ipcRenderer.on("test", () => {
       this.test();
     });
@@ -29,6 +32,9 @@ export default {
   methods: {
     newProject() {
       this.editor.clear();
+    },
+    saveAsProject() {
+      ipcRenderer.send("saveAsProject", { version: "1" });
     },
     test() {
       ipcRenderer.send("test", "Hello, world!");
