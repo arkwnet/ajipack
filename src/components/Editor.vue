@@ -41,6 +41,9 @@ export default defineComponent({
     clear() {
       this.code = "";
     },
+    get() {
+      return this.code;
+    },
   },
 });
 </script>

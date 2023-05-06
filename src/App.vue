@@ -34,7 +34,10 @@ export default {
       this.editor.clear();
     },
     saveAsProject() {
-      ipcRenderer.send("saveAsProject", { version: "1" });
+      ipcRenderer.send("saveAsProject", {
+        version: 1,
+        code: { main: this.editor.get() },
+      });
     },
     test() {
       ipcRenderer.send("test", "Hello, world!");
