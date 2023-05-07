@@ -52,7 +52,7 @@ const template = Menu.buildFromTemplate([
       {
         label: "名前を付けて保存",
         click: function () {
-          win.webContents.send("saveAsProject", null);
+          win.webContents.send("saveProject", null);
         },
       },
       { type: "separator" },
@@ -175,8 +175,8 @@ app.on("ready", async () => {
     }
   }
   createWindow();
-  ipcMain.on("saveAsProject", (event, message) => {
-    saveAsProject(message);
+  ipcMain.on("saveProject", (event, message) => {
+    saveProject(message);
   });
   ipcMain.on("test", (event, message) => {
     console.log(message);
@@ -199,22 +199,27 @@ if (isDevelopment) {
   }
 }
 
-async function saveAsProject(message) {
-  const result = await dialog.showSaveDialog(win, {
-    properties: ["openFile"],
-    filters: [
-      {
-        name: "Documents",
-        extensions: ["apf"],
-      },
-    ],
-  });
-  if (result.canceled) {
-    return;
+async function saveProject(message) {
+  if (message.filePath == "") {
+    const result = await dialog.showSaveDialog(win, {
+      properties: ["openFile"],
+      filters: [
+        {
+          name: "Documents",
+          extensions: ["apf"],
+        },
+      ],
+    });
+    if (result.canceled) {
+      return;
+    }
+    await saveProcess(result.filePath, message.data);
+  } else {
+    await saveProcess(message.filePath, message.data);
   }
-  await saveProcess(result.filePath, message);
 }
 
-async function saveProcess(filePath, message) {
-  fs.writeFileSync(filePath, JSON.stringify(message));
+async function saveProcess(filePath, data) {
+  fs.writeFileSync(filePath, JSON.stringify(data));
+  win.webContents.send("message", { type: "filePath", data: filePath });
 }

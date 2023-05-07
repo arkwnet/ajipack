@@ -12,6 +12,11 @@ export default {
   components: {
     Editor,
   },
+  data() {
+    return {
+      filePath: "",
+    };
+  },
   setup() {
     const editor = ref(null);
     return {
@@ -22,8 +27,11 @@ export default {
     ipcRenderer.on("newProject", () => {
       this.newProject();
     });
-    ipcRenderer.on("saveAsProject", () => {
-      this.saveAsProject();
+    ipcRenderer.on("saveProject", () => {
+      this.saveProject();
+    });
+    ipcRenderer.on("message", (e, data) => {
+      this.onMessage(data);
     });
     ipcRenderer.on("test", () => {
       this.test();
@@ -31,13 +39,24 @@ export default {
   },
   methods: {
     newProject() {
+      this.filePath = "";
       this.editor.clear();
     },
-    saveAsProject() {
-      ipcRenderer.send("saveAsProject", {
-        version: 1,
-        code: { main: this.editor.get() },
+    saveProject() {
+      ipcRenderer.send("saveProject", {
+        filePath: this.filePath,
+        data: {
+          version: 1,
+          code: { main: this.editor.get() },
+        },
       });
+    },
+    onMessage(data) {
+      switch (data.type) {
+        case "filePath":
+          this.filePath = data.data;
+          break;
+      }
     },
     test() {
       ipcRenderer.send("test", "Hello, world!");
