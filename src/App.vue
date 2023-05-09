@@ -14,6 +14,7 @@ export default {
   },
   data() {
     return {
+      data: null,
       filePath: "",
     };
   },
@@ -26,6 +27,9 @@ export default {
   mounted() {
     ipcRenderer.on("newProject", () => {
       this.newProject();
+    });
+    ipcRenderer.on("openProject", () => {
+      this.openProject();
     });
     ipcRenderer.on("saveProject", () => {
       this.saveProject();
@@ -42,6 +46,9 @@ export default {
       this.filePath = "";
       this.editor.clear();
     },
+    openProject() {
+      ipcRenderer.send("openProject", null);
+    },
     saveProject() {
       ipcRenderer.send("saveProject", {
         filePath: this.filePath,
@@ -55,6 +62,10 @@ export default {
       switch (data.type) {
         case "filePath":
           this.filePath = data.data;
+          break;
+        case "project":
+          this.data = data.data;
+          this.editor.set(this.data.code.main);
           break;
       }
     },

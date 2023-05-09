@@ -175,6 +175,9 @@ app.on("ready", async () => {
     }
   }
   createWindow();
+  ipcMain.on("openProject", (event, message) => {
+    openProject(message);
+  });
   ipcMain.on("saveProject", (event, message) => {
     saveProject(message);
   });
@@ -199,6 +202,31 @@ if (isDevelopment) {
   }
 }
 
+async function openProject(message) {
+  const result = await dialog.showOpenDialog(win, {
+    buttonLabel: "開く",
+    properties: ["openFile", "createDirectory"],
+    filters: [
+      {
+        name: "Documents",
+        extensions: ["apf"],
+      },
+    ],
+  });
+  if (result.canceled) {
+    return;
+  }
+  const data = fs.readFileSync(result.filePaths[0]);
+  await win.webContents.send("message", {
+    type: "filePath",
+    data: result.filePaths[0],
+  });
+  await win.webContents.send("message", {
+    type: "project",
+    data: JSON.parse(data),
+  });
+}
+
 async function saveProject(message) {
   if (message.filePath == "") {
     const result = await dialog.showSaveDialog(win, {
@@ -221,5 +249,5 @@ async function saveProject(message) {
 
 async function saveProcess(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data));
-  win.webContents.send("message", { type: "filePath", data: filePath });
+  await win.webContents.send("message", { type: "filePath", data: filePath });
 }

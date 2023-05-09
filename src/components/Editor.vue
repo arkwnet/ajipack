@@ -22,7 +22,7 @@ export default defineComponent({
   },
   data() {
     return {
-      code: "// Ajipack Studio",
+      code: "",
     };
   },
   setup() {
@@ -43,6 +43,9 @@ export default defineComponent({
     },
     get() {
       return this.code;
+    },
+    set(code) {
+      this.code = code;
     },
   },
 });
