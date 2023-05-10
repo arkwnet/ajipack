@@ -25,6 +25,7 @@ export default {
     };
   },
   mounted() {
+    this.initData();
     ipcRenderer.on("newProject", () => {
       this.newProject();
     });
@@ -33,6 +34,9 @@ export default {
     });
     ipcRenderer.on("saveProject", () => {
       this.saveProject();
+    });
+    ipcRenderer.on("saveAsProject", () => {
+      this.saveAsProject();
     });
     ipcRenderer.on("message", (e, data) => {
       this.onMessage(data);
@@ -44,19 +48,31 @@ export default {
   methods: {
     newProject() {
       this.filePath = "";
+      this.initData();
       this.editor.clear();
     },
     openProject() {
       ipcRenderer.send("openProject", null);
     },
     saveProject() {
+      this.data.code.main = this.editor.get();
       ipcRenderer.send("saveProject", {
         filePath: this.filePath,
-        data: {
-          version: 1,
-          code: { main: this.editor.get() },
-        },
+        data: JSON.stringify(this.data),
       });
+    },
+    saveAsProject() {
+      this.data.code.main = this.editor.get();
+      ipcRenderer.send("saveProject", {
+        filePath: "",
+        data: JSON.stringify(this.data),
+      });
+    },
+    initData() {
+      this.data = {
+        version: 1,
+        code: { main: "" },
+      };
     },
     onMessage(data) {
       switch (data.type) {

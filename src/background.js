@@ -52,7 +52,7 @@ const template = Menu.buildFromTemplate([
       {
         label: "名前を付けて保存",
         click: function () {
-          win.webContents.send("saveProject", null);
+          win.webContents.send("saveAsProject", null);
         },
       },
       { type: "separator" },
@@ -175,8 +175,8 @@ app.on("ready", async () => {
     }
   }
   createWindow();
-  ipcMain.on("openProject", (event, message) => {
-    openProject(message);
+  ipcMain.on("openProject", () => {
+    openProject();
   });
   ipcMain.on("saveProject", (event, message) => {
     saveProject(message);
@@ -202,7 +202,7 @@ if (isDevelopment) {
   }
 }
 
-async function openProject(message) {
+async function openProject() {
   const result = await dialog.showOpenDialog(win, {
     buttonLabel: "開く",
     properties: ["openFile", "createDirectory"],
@@ -248,6 +248,6 @@ async function saveProject(message) {
 }
 
 async function saveProcess(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data));
+  fs.writeFileSync(filePath, data);
   await win.webContents.send("message", { type: "filePath", data: filePath });
 }
