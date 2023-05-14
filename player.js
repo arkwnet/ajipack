@@ -10,6 +10,7 @@ const AJIPACK_FPS = 33.0;
 let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
+let ajiMouse = { x: 0, y: 0 };
 
 window.onload = function () {
   ajiInit();
@@ -29,6 +30,7 @@ function ajiInit() {
   if (typeof setup == "function") {
     setup();
   }
+  ajiCanvas.addEventListener("mousedown", ajiMouseDown, false);
   ajiMain();
 }
 
@@ -65,4 +67,18 @@ function ajiSetBG(id, src) {
 
 function ajiDrawBG(id, x, y) {
   ajiContext.drawImage(ajiBG[id], x, y, AJIPACK_WIDTH, AJIPACK_HEIGHT);
+}
+
+function ajiMouseX() {
+  return ajiMouse.x;
+}
+
+function ajiMouseY() {
+  return ajiMouse.y;
+}
+
+function ajiMouseDown(e) {
+  const rect = e.target.getBoundingClientRect();
+  ajiMouse.x = e.clientX - rect.left;
+  ajiMouse.y = e.clientY - rect.top;
 }

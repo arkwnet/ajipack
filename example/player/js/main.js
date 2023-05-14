@@ -16,7 +16,7 @@ function loop() {
   ajiSetFont("20pt sans-serif");
   ajiSetFillColor("#fff");
   ajiDrawText("Hello, world!", x, 125);
-  ajiDrawText(count, 10, 200);
+  ajiDrawText("Mouse: " + ajiMouseX() + ", " + ajiMouseY(), 10, 200);
   ajiDrawText("FPS: " + fps, 10, 230);
   x -= 3;
   count++;
