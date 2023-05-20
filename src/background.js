@@ -55,6 +55,12 @@ const template = Menu.buildFromTemplate([
           win.webContents.send("saveAsProject", null);
         },
       },
+      {
+        label: "パッケージを作成",
+        click: function () {
+          win.webContents.send("exportProject", null);
+        },
+      },
       { type: "separator" },
       isMac
         ? { role: "close", label: "ウィンドウを閉じる" }
@@ -181,6 +187,9 @@ app.on("ready", async () => {
   ipcMain.on("saveProject", (event, message) => {
     saveProject(message);
   });
+  ipcMain.on("exportProject", (event, message) => {
+    exportProject(message);
+  });
   ipcMain.on("test", (event, message) => {
     console.log(message);
   });
@@ -250,4 +259,20 @@ async function saveProject(message) {
 async function saveProcess(filePath, data) {
   fs.writeFileSync(filePath, data);
   await win.webContents.send("message", { type: "filePath", data: filePath });
+}
+
+async function exportProject(message) {
+  const result = await dialog.showSaveDialog(win, {
+    properties: ["openFile"],
+    filters: [
+      {
+        name: "Documents",
+        extensions: ["js"],
+      },
+    ],
+  });
+  if (result.canceled) {
+    return;
+  }
+  fs.writeFileSync(result.filePath, message.data);
 }

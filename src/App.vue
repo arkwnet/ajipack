@@ -38,6 +38,9 @@ export default {
     ipcRenderer.on("saveAsProject", () => {
       this.saveAsProject();
     });
+    ipcRenderer.on("exportProject", () => {
+      this.exportProject();
+    });
     ipcRenderer.on("message", (e, data) => {
       this.onMessage(data);
     });
@@ -66,6 +69,12 @@ export default {
       ipcRenderer.send("saveProject", {
         filePath: "",
         data: JSON.stringify(this.data),
+      });
+    },
+    exportProject() {
+      this.data.code.main = this.editor.get();
+      ipcRenderer.send("exportProject", {
+        data: this.data.code.main,
       });
     },
     initData() {
