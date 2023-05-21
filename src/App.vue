@@ -47,12 +47,14 @@ export default {
     ipcRenderer.on("test", () => {
       this.test();
     });
+    this.updateTitle();
   },
   methods: {
     newProject() {
       this.filePath = "";
       this.initData();
       this.editor.clear();
+      this.updateTitle();
     },
     openProject() {
       ipcRenderer.send("openProject", null);
@@ -87,12 +89,22 @@ export default {
       switch (data.type) {
         case "filePath":
           this.filePath = data.data;
+          this.updateTitle();
           break;
         case "project":
           this.data = data.data;
           this.editor.set(this.data.code.main);
           break;
       }
+    },
+    updateTitle() {
+      let fp;
+      if (this.filePath == "") {
+        fp = "無題";
+      } else {
+        fp = this.filePath;
+      }
+      document.title = fp + " - Ajipack Studio";
     },
     test() {
       ipcRenderer.send("test", "Hello, world!");
