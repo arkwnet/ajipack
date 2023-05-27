@@ -10,6 +10,7 @@ const AJIPACK_FPS = 33.0;
 let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
+let ajiSprite = [];
 let ajiMouse = { x: 0, y: 0 };
 
 window.onload = function () {
@@ -67,6 +68,52 @@ function ajiSetBG(id, src) {
 
 function ajiDrawBG(id, x, y) {
   ajiContext.drawImage(ajiBG[id], x, y, AJIPACK_WIDTH, AJIPACK_HEIGHT);
+}
+
+function ajiAddSprite(id, src) {
+  if (ajiExistSprite(id) == false) {
+    ajiSprite.push({
+      id: id,
+      image: new Image(),
+    });
+    ajiSetSprite(id, src);
+  }
+}
+
+function ajiSetSprite(id, src) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      ajiSprite[i].image.src = src;
+      break;
+    }
+  }
+}
+
+function ajiDeleteSprite(id) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      ajiSprite.splice(i, 1);
+      break;
+    }
+  }
+}
+
+function ajiExistSprite(id) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function ajiDrawSprite(id, x, y) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      ajiContext.drawImage(ajiSprite[i].image, x, y);
+      break;
+    }
+  }
 }
 
 function ajiMouseX() {
