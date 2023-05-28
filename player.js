@@ -46,6 +46,23 @@ function ajiMain() {
   requestAnimationFrame(ajiMain);
 }
 
+function ajiGetData(id) {
+  for (let i = 0; i < ajiData.length; i++) {
+    if (ajiData[i].id == id) {
+      return ajiData[i].data;
+    }
+  }
+}
+
+function ajiExistData(id) {
+  for (let i = 0; i < ajiData.length; i++) {
+    if (ajiData[i].id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function ajiSetFillColor(color) {
   ajiContext.fillStyle = color;
 }
@@ -63,7 +80,9 @@ function ajiDrawText(text, x, y) {
 }
 
 function ajiSetBG(id, src) {
-  ajiBG[id].src = src;
+  if (ajiExistData(src) == true) {
+    ajiBG[id].src = ajiGetData(src);
+  }
 }
 
 function ajiDrawBG(id, x, y) {
@@ -82,8 +101,8 @@ function ajiAddSprite(id, src) {
 
 function ajiSetSprite(id, src) {
   for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id) {
-      ajiSprite[i].image.src = src;
+    if (ajiSprite[i].id == id && ajiExistData(src) == true) {
+      ajiSprite[i].image.src = ajiGetData(src);
       break;
     }
   }
