@@ -5,10 +5,7 @@ const ajiData = [
   },
 ];
 
-function setup() {
-  ajiAddSprite("image", "image");
-}
-
-function loop() {
+async function setup() {
+  await ajiAddSprite("image", "image");
   ajiDrawSprite("image", 0, 0);
 }

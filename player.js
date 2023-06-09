@@ -89,20 +89,24 @@ function ajiDrawBG(id, x, y) {
   ajiContext.drawImage(ajiBG[id], x, y, AJIPACK_WIDTH, AJIPACK_HEIGHT);
 }
 
-function ajiAddSprite(id, src) {
+async function ajiAddSprite(id, src) {
   if (ajiExistSprite(id) == false) {
     ajiSprite.push({
       id: id,
       image: new Image(),
     });
-    ajiSetSprite(id, src);
+    await ajiSetSprite(id, src);
   }
 }
 
-function ajiSetSprite(id, src) {
+async function ajiSetSprite(id, src) {
   for (let i = 0; i < ajiSprite.length; i++) {
     if (ajiSprite[i].id == id && ajiExistData(src) == true) {
-      ajiSprite[i].image.src = ajiGetData(src);
+      await new Promise((resolve, reject) => {
+        ajiSprite[i].image.onload = () => resolve(ajiSprite[i].image);
+        ajiSprite[i].image.onerror = (e) => reject(e);
+        ajiSprite[i].image.src = ajiGetData(src);
+      });
       break;
     }
   }
