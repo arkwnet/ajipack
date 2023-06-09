@@ -79,9 +79,13 @@ function ajiDrawText(text, x, y) {
   ajiContext.fillText(text, x, y);
 }
 
-function ajiSetBG(id, src) {
+async function ajiSetBG(id, src) {
   if (ajiExistData(src) == true) {
-    ajiBG[id].src = ajiGetData(src);
+    await new Promise((resolve, reject) => {
+      ajiBG[id].onload = () => resolve(ajiBG[id]);
+      ajiBG[id].onerror = (e) => reject(e);
+      ajiBG[id].src = ajiGetData(src);
+    });
   }
 }
 
