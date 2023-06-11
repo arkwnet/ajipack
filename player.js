@@ -103,6 +103,14 @@ async function ajiAddSprite(id, src) {
   }
 }
 
+function ajiGetSprite(id) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      return ajiSprite[i].image;
+    }
+  }
+}
+
 async function ajiSetSprite(id, src) {
   for (let i = 0; i < ajiSprite.length; i++) {
     if (ajiSprite[i].id == id && ajiExistData(src) == true) {
@@ -138,6 +146,15 @@ function ajiDrawSprite(id, x, y) {
   for (let i = 0; i < ajiSprite.length; i++) {
     if (ajiSprite[i].id == id) {
       ajiContext.drawImage(ajiSprite[i].image, x, y);
+      break;
+    }
+  }
+}
+
+function ajiDrawSpriteZoom(id, x, y, w, h) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      ajiContext.drawImage(ajiSprite[i].image, x, y, w, h);
       break;
     }
   }
