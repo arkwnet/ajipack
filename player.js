@@ -112,34 +112,28 @@ function ajiGetSprite(id) {
 }
 
 async function ajiSetSprite(id, src) {
-  for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id && ajiExistData(src) == true) {
-      await new Promise((resolve, reject) => {
-        ajiSprite[i].image.onload = () => resolve(ajiSprite[i].image);
-        ajiSprite[i].image.onerror = (e) => reject(e);
-        ajiSprite[i].image.src = ajiGetData(src);
-      });
-      break;
-    }
+  if (ajiExistSprite(id) == true && ajiExistData(src) == true) {
+    const i = await ajiFindSpriteNumber(id);
+    await new Promise((resolve, reject) => {
+      ajiSprite[i].image.onload = () => resolve(ajiSprite[i].image);
+      ajiSprite[i].image.onerror = (e) => reject(e);
+      ajiSprite[i].image.src = ajiGetData(src);
+    });
   }
 }
 
 function ajiDeleteSprite(id) {
-  for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id) {
-      ajiSprite.splice(i, 1);
-      break;
-    }
+  if (ajiExistSprite(id) == true) {
+    ajiSprite.splice(ajiFindSpriteNumber(id), 1);
   }
 }
 
 function ajiExistSprite(id) {
-  for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id) {
-      return true;
-    }
+  if (ajiFindSpriteNumber(id) >= 0) {
+    return true;
+  } else {
+    return false;
   }
-  return false;
 }
 
 function ajiFindSpriteNumber(id) {
@@ -152,20 +146,14 @@ function ajiFindSpriteNumber(id) {
 }
 
 function ajiDrawSprite(id, x, y) {
-  for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id) {
-      ajiContext.drawImage(ajiSprite[i].image, x, y);
-      break;
-    }
+  if (ajiExistSprite(id) == true) {
+    ajiContext.drawImage(ajiSprite[ajiFindSpriteNumber(id)].image, x, y);
   }
 }
 
 function ajiDrawSpriteZoom(id, x, y, w, h) {
-  for (let i = 0; i < ajiSprite.length; i++) {
-    if (ajiSprite[i].id == id) {
-      ajiContext.drawImage(ajiSprite[i].image, x, y, w, h);
-      break;
-    }
+  if (ajiExistSprite(id) == true) {
+    ajiContext.drawImage(ajiSprite[ajiFindSpriteNumber(id)].image, x, y, w, h);
   }
 }
 
