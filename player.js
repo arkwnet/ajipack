@@ -142,6 +142,15 @@ function ajiExistSprite(id) {
   return false;
 }
 
+function ajiFindSpriteNumber(id) {
+  for (let i = 0; i < ajiSprite.length; i++) {
+    if (ajiSprite[i].id == id) {
+      return i;
+    }
+  }
+  return undefined;
+}
+
 function ajiDrawSprite(id, x, y) {
   for (let i = 0; i < ajiSprite.length; i++) {
     if (ajiSprite[i].id == id) {
