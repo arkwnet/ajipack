@@ -11,6 +11,8 @@ let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
 let ajiSprite = [];
+let ajiAudioContext = new AudioContext();
+let ajiAudio = [];
 let ajiMouse = { x: 0, y: 0 };
 
 window.onload = function () {
@@ -154,6 +156,47 @@ function ajiDrawSprite(id, x, y) {
 function ajiDrawSpriteZoom(id, x, y, w, h) {
   if (ajiExistSprite(id) == true) {
     ajiContext.drawImage(ajiSprite[ajiFindSpriteNumber(id)].image, x, y, w, h);
+  }
+}
+
+async function ajiAddAudio(id, src) {
+  ajiAudio.push({
+    id: id,
+    buffer: null,
+  });
+  await ajiSetAudio(id, src);
+}
+
+async function ajiSetAudio(id, src) {
+  let promise = new Promise(function (resolve) {
+    let audioRequest = new XMLHttpRequest();
+    audioRequest.open("GET", ajiGetData(src), true);
+    audioRequest.responseType = "arraybuffer";
+    audioRequest.send();
+    audioRequest.onload = function () {
+      ajiAudioContext.decodeAudioData(audioRequest.response, function (buf) {
+        for (let i = 0; i < ajiAudio.length; i++) {
+          if (ajiAudio[i].id == id) {
+            ajiAudio[i].buffer = buf;
+            resolve();
+            break;
+          }
+        }
+      });
+    };
+  });
+  await promise;
+}
+
+function ajiPlayAudio(id) {
+  for (let i = 0; i < ajiAudio.length; i++) {
+    if (ajiAudio[i].id == id) {
+      let audioSource = ajiAudioContext.createBufferSource();
+      audioSource.buffer = ajiAudio[i].buffer;
+      audioSource.connect(ajiAudioContext.destination);
+      audioSource.start(0);
+      break;
+    }
   }
 }
 
