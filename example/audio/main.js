@@ -11,20 +11,21 @@ const ajiData = [
 
 let count = 0;
 
-async function setup() {
-  await ajiAddAudio("audio1", "audio1");
-  await ajiAddAudio("audio2", "audio2");
-}
-
-function loop() {
-  if (count == 0) {
-    ajiPlayAudio("audio1");
+async function loop() {
+  if (count == 0 || count == 90) {
+    ajiDeleteAudio("audio");
+    if (count == 0) {
+      await ajiAddAudio("audio", "audio1");
+    }
+    if (count == 90) {
+      await ajiAddAudio("audio", "audio2");
+    }
   }
-  if (count == 60) {
-    ajiPlayAudio("audio2");
+  if (count == 1 || count == 91) {
+    ajiPlayAudio("audio");
   }
   count++;
-  if (count >= 120) {
+  if (count >= 180) {
     count = 0;
   }
 }

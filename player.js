@@ -187,6 +187,12 @@ async function ajiSetAudio(id, src) {
   }
 }
 
+function ajiDeleteAudio(id) {
+  if (ajiExistAudio(id) == true) {
+    ajiAudio.splice(ajiFindAudioNumber(id), 1);
+  }
+}
+
 function ajiExistAudio(id) {
   if (ajiFindAudioNumber(id) >= 0) {
     return true;
