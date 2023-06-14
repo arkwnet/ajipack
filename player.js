@@ -160,44 +160,55 @@ function ajiDrawSpriteZoom(id, x, y, w, h) {
 }
 
 async function ajiAddAudio(id, src) {
-  ajiAudio.push({
-    id: id,
-    buffer: null,
-  });
-  await ajiSetAudio(id, src);
+  if (ajiExistAudio(id) == false) {
+    ajiAudio.push({
+      id: id,
+      buffer: null,
+    });
+    await ajiSetAudio(id, src);
+  }
 }
 
 async function ajiSetAudio(id, src) {
-  let promise = new Promise(function (resolve) {
-    let audioRequest = new XMLHttpRequest();
-    audioRequest.open("GET", ajiGetData(src), true);
-    audioRequest.responseType = "arraybuffer";
-    audioRequest.send();
-    audioRequest.onload = function () {
-      ajiAudioContext.decodeAudioData(audioRequest.response, function (buf) {
-        for (let i = 0; i < ajiAudio.length; i++) {
-          if (ajiAudio[i].id == id) {
-            ajiAudio[i].buffer = buf;
-            resolve();
-            break;
-          }
-        }
-      });
-    };
-  });
-  await promise;
+  if (ajiExistAudio(id) == true) {
+    let promise = new Promise(function (resolve) {
+      let audioRequest = new XMLHttpRequest();
+      audioRequest.open("GET", ajiGetData(src), true);
+      audioRequest.responseType = "arraybuffer";
+      audioRequest.send();
+      audioRequest.onload = function () {
+        ajiAudioContext.decodeAudioData(audioRequest.response, function (buf) {
+          ajiAudio[ajiFindAudioNumber(id)].buffer = buf;
+          resolve();
+        });
+      };
+    });
+    await promise;
+  }
+}
+
+function ajiExistAudio(id) {
+  if (ajiFindAudioNumber(id) >= 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function ajiFindAudioNumber(id) {
+  for (let i = 0; i < ajiAudio.length; i++) {
+    if (ajiAudio[i].id == id) {
+      return i;
+    }
+  }
+  return undefined;
 }
 
 function ajiPlayAudio(id) {
-  for (let i = 0; i < ajiAudio.length; i++) {
-    if (ajiAudio[i].id == id) {
-      let audioSource = ajiAudioContext.createBufferSource();
-      audioSource.buffer = ajiAudio[i].buffer;
-      audioSource.connect(ajiAudioContext.destination);
-      audioSource.start(0);
-      break;
-    }
-  }
+  let audioSource = ajiAudioContext.createBufferSource();
+  audioSource.buffer = ajiAudio[ajiFindAudioNumber(id)].buffer;
+  audioSource.connect(ajiAudioContext.destination);
+  audioSource.start(0);
 }
 
 function ajiMouseX() {
