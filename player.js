@@ -13,7 +13,7 @@ let ajiBG = [new Image(), new Image(), new Image(), new Image()];
 let ajiSprite = [];
 let ajiAudioContext = new AudioContext();
 let ajiAudio = [];
-let ajiMouse = { x: 0, y: 0 };
+let ajiMouse = { x: 0, y: 0, flag: false, count: 0 };
 
 window.onload = function () {
   ajiInit();
@@ -34,6 +34,7 @@ function ajiInit() {
     setup();
   }
   ajiCanvas.addEventListener("mousedown", ajiMouseDown, false);
+  ajiCanvas.addEventListener("mouseup", ajiMouseUp);
   ajiMain();
 }
 
@@ -41,6 +42,11 @@ function ajiMain() {
   const ajiNowTime = Date.now();
   if (ajiNowTime - ajiDrawTime >= 1000 / AJIPACK_FPS) {
     ajiDrawTime = ajiNowTime;
+    if (ajiMouse.flag == true) {
+      ajiMouse.count++;
+    } else {
+      ajiMouse.count = 0;
+    }
     if (typeof loop == "function") {
       loop();
     }
@@ -229,4 +235,17 @@ function ajiMouseDown(e) {
   const rect = e.target.getBoundingClientRect();
   ajiMouse.x = e.clientX - rect.left;
   ajiMouse.y = e.clientY - rect.top;
+  ajiMouse.flag = true;
+}
+
+function ajiMouseUp() {
+  ajiMouse.flag = false;
+}
+
+function ajiClick() {
+  if (ajiMouse.flag == true && ajiMouse.count == 1) {
+    return true;
+  } else {
+    return false;
+  }
 }
