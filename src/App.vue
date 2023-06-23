@@ -1,16 +1,22 @@
 <template>
   <Editor ref="editor" />
+  <Script></Script>
+  <Data></Data>
 </template>
 
 <script>
 import { ref } from "vue";
 import { ipcRenderer } from "electron";
 import Editor from "./components/Editor.vue";
+import Script from "./components/Script.vue";
+import Data from "./components/Data.vue";
 
 export default {
   name: "App",
   components: {
     Editor,
+    Script,
+    Data,
   },
   data() {
     return {
