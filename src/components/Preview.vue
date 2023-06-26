@@ -1,6 +1,7 @@
 <template>
-  <div class="panel script">
-    <div class="header">スクリプト管理</div>
+  <div class="panel preview">
+    <div class="header">プレビュー</div>
+    <div class="frame"></div>
   </div>
 </template>
 
@@ -17,5 +18,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "../assets/sass/Script";
+@import "../assets/sass/Preview";
 </style>

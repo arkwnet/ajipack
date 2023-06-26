@@ -2,6 +2,7 @@
   <Editor ref="editor" />
   <Script></Script>
   <Data></Data>
+  <Preview></Preview>
 </template>
 
 <script>
@@ -10,6 +11,7 @@ import { ipcRenderer } from "electron";
 import Editor from "./components/Editor.vue";
 import Script from "./components/Script.vue";
 import Data from "./components/Data.vue";
+import Preview from "./components/Preview.vue";
 
 export default {
   name: "App",
@@ -17,6 +19,7 @@ export default {
     Editor,
     Script,
     Data,
+    Preview,
   },
   data() {
     return {
@@ -118,3 +121,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import "./assets/sass/App";
+</style>

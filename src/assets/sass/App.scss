@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.panel {
+  background-color: #bdbdbd;
+
+  .header {
+    width: 320px;
+    height: 30px;
+    padding: 1px 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #212121;
+    color: #fff;
+    border-top: solid 1px #eee;
+    border-bottom: solid 1px #eee;
+  }
+}

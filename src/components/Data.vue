@@ -1,5 +1,7 @@
 <template>
-  <div class="data"></div>
+  <div class="panel data">
+    <div class="header">データ管理</div>
+  </div>
 </template>
 
 <script>

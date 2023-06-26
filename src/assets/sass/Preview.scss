@@ -1,0 +1,16 @@
+.preview {
+  width: 320px;
+  height: 270px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
+.frame {
+  width: 320px;
+  height: 240px;
+  position: absolute;
+  left: 0;
+  top: 30px;
+  background-color: #000;
+}
