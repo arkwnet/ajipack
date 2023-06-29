@@ -12,5 +12,11 @@
   position: absolute;
   left: 0;
   top: 30px;
-  background-color: #000;
+
+  iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 0;
+  }
 }

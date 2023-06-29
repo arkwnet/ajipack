@@ -1,7 +1,9 @@
 <template>
   <div class="panel preview">
     <div class="header">プレビュー</div>
-    <div class="frame"></div>
+    <div class="frame">
+      <iframe width="320" height="240" src="/preview/index.html"></iframe>
+    </div>
   </div>
 </template>
 
