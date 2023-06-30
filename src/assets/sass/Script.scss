@@ -4,4 +4,29 @@
   position: fixed;
   left: 0;
   top: 0;
+
+  .main {
+    padding: 3px 5px;
+
+    .list {
+      .item {
+        width: 100%;
+        margin-bottom: 3px;
+        padding: 0 5px 3px 5px;
+        color: #000;
+        border-radius: 5px;
+        list-style-type: none;
+
+        &:hover {
+          background-color: #e0e0e0;
+          cursor: pointer;
+        }
+
+        &.selected {
+          color: #fff;
+          background-color: #0d47a1;
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,6 @@
 <template>
   <Editor ref="editor" />
-  <Script></Script>
+  <Script ref="script"></Script>
   <Data></Data>
   <Preview></Preview>
 </template>
@@ -29,8 +29,10 @@ export default {
   },
   setup() {
     const editor = ref(null);
+    const script = ref(null);
     return {
       editor,
+      script,
     };
   },
   mounted() {
@@ -93,6 +95,8 @@ export default {
         version: 1,
         code: { main: "" },
       };
+      this.script.setKeys(Object.keys(this.data.code));
+      this.script.setSelected("main");
     },
     onMessage(data) {
       switch (data.type) {
