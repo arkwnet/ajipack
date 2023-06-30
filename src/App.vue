@@ -1,7 +1,7 @@
 <template>
-  <Editor ref="editor" />
-  <Script ref="script"></Script>
-  <Data></Data>
+  <Editor ref="refEditor" />
+  <Script ref="refScript"></Script>
+  <Data ref="refData"></Data>
   <Preview></Preview>
 </template>
 
@@ -28,11 +28,13 @@ export default {
     };
   },
   setup() {
-    const editor = ref(null);
-    const script = ref(null);
+    const refEditor = ref(null);
+    const refScript = ref(null);
+    const refData = ref(null);
     return {
-      editor,
-      script,
+      refEditor,
+      refScript,
+      refData,
     };
   },
   mounted() {
@@ -64,28 +66,28 @@ export default {
     newProject() {
       this.filePath = "";
       this.initData();
-      this.editor.clear();
+      this.refEditor.clear();
       this.updateTitle();
     },
     openProject() {
       ipcRenderer.send("openProject", null);
     },
     saveProject() {
-      this.data.code.main = this.editor.get();
+      this.data.code.main = this.refEditor.get();
       ipcRenderer.send("saveProject", {
         filePath: this.filePath,
         data: JSON.stringify(this.data),
       });
     },
     saveAsProject() {
-      this.data.code.main = this.editor.get();
+      this.data.code.main = this.refEditor.get();
       ipcRenderer.send("saveProject", {
         filePath: "",
         data: JSON.stringify(this.data),
       });
     },
     exportProject() {
-      this.data.code.main = this.editor.get();
+      this.data.code.main = this.refEditor.get();
       ipcRenderer.send("exportProject", {
         data: this.data.code.main,
       });
@@ -95,8 +97,8 @@ export default {
         version: 1,
         code: { main: "" },
       };
-      this.script.setKeys(Object.keys(this.data.code));
-      this.script.setSelected("main");
+      this.refScript.setKeys(Object.keys(this.data.code));
+      this.refScript.setSelected("main");
     },
     onMessage(data) {
       switch (data.type) {
@@ -106,7 +108,9 @@ export default {
           break;
         case "project":
           this.data = data.data;
-          this.editor.set(this.data.code.main);
+          this.refEditor.set(this.data.code.main);
+          this.refScript.setKeys(Object.keys(this.data.code));
+          this.refScript.setSelected("main");
           break;
       }
     },
