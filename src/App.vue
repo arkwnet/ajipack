@@ -1,6 +1,6 @@
 <template>
   <Editor ref="refEditor" />
-  <Script ref="refScript"></Script>
+  <Script ref="refScript" @changeScript="changeScript"></Script>
   <Data ref="refData"></Data>
   <Preview></Preview>
 </template>
@@ -25,6 +25,7 @@ export default {
     return {
       data: null,
       filePath: "",
+      script: "",
     };
   },
   setup() {
@@ -63,6 +64,9 @@ export default {
     this.updateTitle();
   },
   methods: {
+    test() {
+      ipcRenderer.send("test", "Hello, world!");
+    },
     newProject() {
       this.filePath = "";
       this.initData();
@@ -97,8 +101,8 @@ export default {
         version: 1,
         code: { main: "" },
       };
-      this.refScript.setKeys(Object.keys(this.data.code));
-      this.refScript.setSelected("main");
+      this.script = "main";
+      this.updateScriptPanel();
     },
     onMessage(data) {
       switch (data.type) {
@@ -109,8 +113,8 @@ export default {
         case "project":
           this.data = data.data;
           this.refEditor.set(this.data.code.main);
-          this.refScript.setKeys(Object.keys(this.data.code));
-          this.refScript.setSelected("main");
+          this.script = "main";
+          this.updateScriptPanel();
           break;
       }
     },
@@ -123,8 +127,16 @@ export default {
       }
       document.title = fp + " - Ajipack Studio";
     },
-    test() {
-      ipcRenderer.send("test", "Hello, world!");
+    changeScript(key) {
+      if (this.script != key) {
+        this.script = key;
+        this.refEditor.set(this.data["code"][this.script]);
+        this.updateScriptPanel();
+      }
+    },
+    updateScriptPanel() {
+      this.refScript.setKeys(Object.keys(this.data.code));
+      this.refScript.setSelected(this.script);
     },
   },
 };

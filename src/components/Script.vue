@@ -3,7 +3,7 @@
     <div class="header">スクリプト管理</div>
     <div class="main scroll">
       <div class="list">
-        <div v-for="key in keys" :key="key">
+        <div v-for="key in keys" :key="key" @click="click(key)">
           <div v-if="key == selected">
             <div class="item selected">{{ key }}</div>
           </div>
@@ -21,6 +21,7 @@
 import { defineComponent, shallowRef } from "vue";
 
 export default defineComponent({
+  emits: [],
   data() {
     return {
       selected: "",
@@ -43,6 +44,11 @@ export default defineComponent({
     },
     setSelected(selected) {
       this.selected = selected;
+    },
+    click(key) {
+      if (key != this.selected) {
+        this.$emit("changeScript", key);
+      }
     },
   },
 });
