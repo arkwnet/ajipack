@@ -144,7 +144,12 @@ export default {
       this.refScript.setSelected(this.script);
     },
     scriptAdd() {
-      //
+      const value = "sub";
+      if (this.data["code"][value] == undefined) {
+        this.data["code"][value] = "";
+        this.scriptChange(value);
+        this.scriptUpdate();
+      }
     },
     scriptDelete(key) {
       delete this.data["code"][key];

@@ -54,7 +54,7 @@ export default defineComponent({
       }
     },
     add() {
-      //
+      this.$emit("scriptAdd");
     },
     del() {
       if (this.selected != "main") {
