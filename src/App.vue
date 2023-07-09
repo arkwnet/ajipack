@@ -1,6 +1,11 @@
 <template>
   <Editor ref="refEditor" />
-  <Script ref="refScript" @changeScript="changeScript"></Script>
+  <Script
+    ref="refScript"
+    @scriptChange="scriptChange"
+    @scriptAdd="scriptAdd"
+    @scriptDelete="scriptDelete"
+  ></Script>
   <Data ref="refData"></Data>
   <Preview></Preview>
 </template>
@@ -102,7 +107,7 @@ export default {
         code: { main: "" },
       };
       this.script = "main";
-      this.updateScriptPanel();
+      this.scriptUpdate();
     },
     onMessage(data) {
       switch (data.type) {
@@ -114,7 +119,7 @@ export default {
           this.data = data.data;
           this.refEditor.set(this.data.code.main);
           this.script = "main";
-          this.updateScriptPanel();
+          this.scriptUpdate();
           break;
       }
     },
@@ -127,16 +132,24 @@ export default {
       }
       document.title = fp + " - Ajipack Studio";
     },
-    changeScript(key) {
+    scriptChange(key) {
       if (this.script != key) {
         this.script = key;
         this.refEditor.set(this.data["code"][this.script]);
-        this.updateScriptPanel();
+        this.scriptUpdate();
       }
     },
-    updateScriptPanel() {
+    scriptUpdate() {
       this.refScript.setKeys(Object.keys(this.data.code));
       this.refScript.setSelected(this.script);
+    },
+    scriptAdd() {
+      //
+    },
+    scriptDelete(key) {
+      delete this.data["code"][key];
+      this.scriptChange("main");
+      this.scriptUpdate();
     },
   },
 };

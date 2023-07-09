@@ -13,7 +13,10 @@
         </div>
       </div>
     </div>
-    <div class="footer"></div>
+    <div class="footer">
+      <div class="button" id="button_add" @click="add()"></div>
+      <div class="button" id="button_del" @click="del()"></div>
+    </div>
   </div>
 </template>
 
@@ -47,7 +50,22 @@ export default defineComponent({
     },
     click(key) {
       if (key != this.selected) {
-        this.$emit("changeScript", key);
+        this.$emit("scriptChange", key);
+      }
+    },
+    add() {
+      //
+    },
+    del() {
+      if (this.selected != "main") {
+        const value = window.confirm(
+          this.selected + " スクリプトを削除しますか?"
+        );
+        if (value == true) {
+          this.$emit("scriptDelete", this.selected);
+        }
+      } else {
+        alert("main スクリプトは削除できません");
       }
     },
   },

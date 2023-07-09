@@ -40,6 +40,20 @@
     left: 0;
     bottom: 0;
     background-color: #757575;
+
+    .button {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 3px;
+      background-color: #fefefe;
+      border: solid 1px #636363;
+      border-radius: 5px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 
