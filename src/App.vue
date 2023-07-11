@@ -8,6 +8,8 @@
   ></Script>
   <Data ref="refData"></Data>
   <Preview></Preview>
+  <Cover v-if="isCover"></Cover>
+  <ScriptDialog v-if="isScriptDialog"></ScriptDialog>
 </template>
 
 <script>
@@ -17,6 +19,8 @@ import Editor from "./components/Editor.vue";
 import Script from "./components/Script.vue";
 import Data from "./components/Data.vue";
 import Preview from "./components/Preview.vue";
+import Cover from "./components/Cover.vue";
+import ScriptDialog from "./components/Dialog/ScriptDialog.vue";
 
 export default {
   name: "App",
@@ -25,12 +29,16 @@ export default {
     Script,
     Data,
     Preview,
+    Cover,
+    ScriptDialog,
   },
   data() {
     return {
       data: null,
       filePath: "",
       script: "",
+      isCover: false,
+      isScriptDialog: false,
     };
   },
   setup() {
