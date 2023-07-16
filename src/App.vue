@@ -109,8 +109,13 @@ export default {
     },
     exportProject() {
       this.scriptUpdate();
+      let data = "";
+      const keys = Object.keys(this.data.code);
+      for (let i = 0; i < keys.length; i++) {
+        data += this.data["code"][keys[i]] += "\n";
+      }
       ipcRenderer.send("exportProject", {
-        data: this.data.code.main,
+        data: data,
       });
     },
     initData() {
