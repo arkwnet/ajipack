@@ -94,21 +94,21 @@ export default {
       ipcRenderer.send("openProject", null);
     },
     saveProject() {
-      this.data.code.main = this.refEditor.get();
+      this.scriptUpdate();
       ipcRenderer.send("saveProject", {
         filePath: this.filePath,
         data: JSON.stringify(this.data),
       });
     },
     saveAsProject() {
-      this.data.code.main = this.refEditor.get();
+      this.scriptUpdate();
       ipcRenderer.send("saveProject", {
         filePath: "",
         data: JSON.stringify(this.data),
       });
     },
     exportProject() {
-      this.data.code.main = this.refEditor.get();
+      this.scriptUpdate();
       ipcRenderer.send("exportProject", {
         data: this.data.code.main,
       });
@@ -145,6 +145,7 @@ export default {
       document.title = fp + " - Ajipack Studio";
     },
     scriptChange(key) {
+      this.scriptUpdate();
       if (this.script != key) {
         this.script = key;
         this.refEditor.set(this.data["code"][this.script]);
@@ -152,6 +153,7 @@ export default {
       }
     },
     scriptUpdate() {
+      this.data["code"][this.script] = this.refEditor.get();
       this.refScript.setKeys(Object.keys(this.data.code));
       this.refScript.setSelected(this.script);
     },
