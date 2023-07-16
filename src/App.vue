@@ -9,7 +9,11 @@
   <Data ref="refData"></Data>
   <Preview></Preview>
   <Cover v-if="isCover"></Cover>
-  <ScriptDialog v-if="isScriptDialog"></ScriptDialog>
+  <ScriptDialog
+    v-if="isScriptDialog"
+    @add="dialogScriptAdd"
+    @close="dialogScriptClose"
+  ></ScriptDialog>
 </template>
 
 <script>
@@ -152,17 +156,25 @@ export default {
       this.refScript.setSelected(this.script);
     },
     scriptAdd() {
-      const value = "sub";
-      if (this.data["code"][value] == undefined) {
-        this.data["code"][value] = "";
-        this.scriptChange(value);
-        this.scriptUpdate();
-      }
+      this.isCover = true;
+      this.isScriptDialog = true;
     },
     scriptDelete(key) {
       delete this.data["code"][key];
       this.scriptChange("main");
       this.scriptUpdate();
+    },
+    dialogScriptAdd(key) {
+      if (this.data["code"][key] == undefined) {
+        this.data["code"][key] = "";
+        this.scriptChange(key);
+        this.scriptUpdate();
+        this.dialogScriptClose();
+      }
+    },
+    dialogScriptClose() {
+      this.isCover = false;
+      this.isScriptDialog = false;
     },
   },
 };
