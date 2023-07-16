@@ -14,8 +14,12 @@
       </div>
     </div>
     <div class="footer">
-      <div class="button" id="button_add" @click="add()"></div>
-      <div class="button" id="button_del" @click="del()"></div>
+      <div class="button" id="button_add" @click="add()">
+        <img src="../assets/img/add.svg" />
+      </div>
+      <div class="button" id="button_del" @click="del()">
+        <img src="../assets/img/delete.svg" />
+      </div>
     </div>
   </div>
 </template>

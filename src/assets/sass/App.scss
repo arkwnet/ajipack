@@ -50,6 +50,14 @@
       border: solid 1px #636363;
       border-radius: 5px;
 
+      img {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+      }
+
       &:hover {
         cursor: pointer;
       }
