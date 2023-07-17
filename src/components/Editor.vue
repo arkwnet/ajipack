@@ -22,7 +22,7 @@ export default defineComponent({
   },
   data() {
     return {
-      code: "",
+      code: "function setup() {\n}\n\nfunction loop() {\n}",
     };
   },
   setup() {

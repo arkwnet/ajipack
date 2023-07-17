@@ -190,6 +190,9 @@ app.on("ready", async () => {
   ipcMain.on("exportProject", (event, message) => {
     exportProject(message);
   });
+  ipcMain.on("exportPreview", (event, message) => {
+    exportPreview(message);
+  });
   ipcMain.on("test", (event, message) => {
     console.log(message);
   });
@@ -275,4 +278,15 @@ async function exportProject(message) {
     return;
   }
   fs.writeFileSync(result.filePath, message.data);
+}
+
+async function exportPreview(message) {
+  fs.writeFileSync(
+    process.cwd() + "\\public\\preview\\js\\preview.js",
+    message.data
+  );
+  await win.webContents.send("message", {
+    type: "preview",
+    data: null,
+  });
 }

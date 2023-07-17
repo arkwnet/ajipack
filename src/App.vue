@@ -7,7 +7,7 @@
     @scriptDelete="scriptDelete"
   ></Script>
   <Data ref="refData"></Data>
-  <Preview></Preview>
+  <Preview @play="previewPlay"></Preview>
   <Cover v-if="isCover"></Cover>
   <ScriptDialog
     v-if="isScriptDialog"
@@ -49,10 +49,12 @@ export default {
     const refEditor = ref(null);
     const refScript = ref(null);
     const refData = ref(null);
+    const refPreview = ref(null);
     return {
       refEditor,
       refScript,
       refData,
+      refPreview,
     };
   },
   mounted() {
@@ -109,14 +111,17 @@ export default {
     },
     exportProject() {
       this.scriptUpdate();
+      ipcRenderer.send("exportProject", {
+        data: this.generatePackage(),
+      });
+    },
+    generatePackage() {
       let data = "";
       const keys = Object.keys(this.data.code);
       for (let i = 0; i < keys.length; i++) {
         data += this.data["code"][keys[i]] += "\n";
       }
-      ipcRenderer.send("exportProject", {
-        data: data,
-      });
+      return data;
     },
     initData() {
       this.data = {
@@ -137,6 +142,9 @@ export default {
           this.refEditor.set(this.data.code.main);
           this.script = "main";
           this.scriptUpdate();
+          break;
+        case "preview":
+          this.refPreview.update();
           break;
       }
     },
@@ -170,6 +178,11 @@ export default {
       delete this.data["code"][key];
       this.scriptChange("main");
       this.scriptUpdate();
+    },
+    previewPlay() {
+      ipcRenderer.send("exportPreview", {
+        data: this.generatePackage(),
+      });
     },
     dialogScriptAdd(key) {
       if (this.data["code"][key] == undefined) {
