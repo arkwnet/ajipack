@@ -54,11 +54,11 @@ export default defineComponent({
     },
     click(key) {
       if (key != this.selected) {
-        this.$emit("scriptChange", key);
+        this.$emit("change", key);
       }
     },
     add() {
-      this.$emit("scriptAdd");
+      this.$emit("add");
     },
     del() {
       if (this.selected != "main") {
@@ -66,7 +66,7 @@ export default defineComponent({
           this.selected + " スクリプトを削除しますか?"
         );
         if (value == true) {
-          this.$emit("scriptDelete", this.selected);
+          this.$emit("delete", this.selected);
         }
       } else {
         alert("main スクリプトは削除できません");

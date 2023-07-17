@@ -2,9 +2,9 @@
   <Editor ref="refEditor" />
   <Script
     ref="refScript"
-    @scriptChange="scriptChange"
-    @scriptAdd="scriptAdd"
-    @scriptDelete="scriptDelete"
+    @change="scriptChange"
+    @add="scriptAdd"
+    @delete="scriptDelete"
   ></Script>
   <Data ref="refData"></Data>
   <Preview @play="previewPlay"></Preview>
@@ -175,8 +175,8 @@ export default {
       this.isScriptDialog = true;
     },
     scriptDelete(key) {
-      delete this.data["code"][key];
       this.scriptChange("main");
+      delete this.data["code"][key];
       this.scriptUpdate();
     },
     previewPlay() {
