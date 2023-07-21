@@ -140,6 +140,7 @@ async function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      webSecurity: false,
     },
   });
 
@@ -281,12 +282,11 @@ async function exportProject(message) {
 }
 
 async function exportPreview(message) {
-  fs.writeFileSync(
-    process.cwd() + "\\public\\preview\\js\\preview.js",
-    message.data
-  );
+  fs.writeFileSync(process.cwd() + "\\preview\\js\\preview.js", message.data);
+  let cwd = process.cwd();
+  cwd.replaceAll("\\", "/");
   await win.webContents.send("message", {
     type: "preview",
-    data: null,
+    data: "file://" + cwd + "/preview/index.html",
   });
 }

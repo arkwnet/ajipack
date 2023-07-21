@@ -7,7 +7,7 @@
     @delete="scriptDelete"
   ></Script>
   <Data ref="refData"></Data>
-  <Preview @play="previewPlay"></Preview>
+  <Preview ref="refPreview" @play="previewPlay"></Preview>
   <Cover v-if="isCover"></Cover>
   <ScriptDialog
     v-if="isScriptDialog"
@@ -144,7 +144,7 @@ export default {
           this.scriptUpdate();
           break;
         case "preview":
-          this.refPreview.update();
+          this.refPreview.update(data.data);
           break;
       }
     },

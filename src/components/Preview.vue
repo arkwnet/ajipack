@@ -19,7 +19,7 @@ export default defineComponent({
   emits: [],
   data() {
     return {
-      src: "/preview/index.html",
+      src: "about:blank",
     };
   },
   setup() {
@@ -36,9 +36,9 @@ export default defineComponent({
     play() {
       this.$emit("play");
     },
-    update() {
+    update(src) {
       this.src = "about:blank";
-      this.src = "/preview/index.html";
+      this.src = src;
     },
   },
 });
