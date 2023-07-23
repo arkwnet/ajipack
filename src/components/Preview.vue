@@ -34,10 +34,10 @@ export default defineComponent({
   },
   methods: {
     play() {
+      this.update("about:blank");
       this.$emit("play");
     },
     update(src) {
-      this.src = "about:blank";
       this.src = src;
     },
   },

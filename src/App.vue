@@ -180,6 +180,7 @@ export default {
       this.scriptUpdate();
     },
     previewPlay() {
+      this.data["code"][this.script] = this.refEditor.get();
       ipcRenderer.send("exportPreview", {
         data: this.generatePackage(),
       });
