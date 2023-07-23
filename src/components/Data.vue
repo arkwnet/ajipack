@@ -2,7 +2,14 @@
   <div class="panel data">
     <div class="header">データ管理</div>
     <div class="main scroll"></div>
-    <div class="footer"></div>
+    <div class="footer">
+      <div class="button" id="button_add" @click="add()">
+        <img src="../assets/img/add.svg" />
+      </div>
+      <div class="button" id="button_del" @click="del()">
+        <img src="../assets/img/delete.svg" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,7 +30,14 @@ export default defineComponent({
       log: console.log,
     };
   },
-  methods: {},
+  methods: {
+    add() {
+      //
+    },
+    del() {
+      //
+    },
+  },
 });
 </script>
 

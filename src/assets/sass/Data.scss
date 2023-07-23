@@ -4,4 +4,14 @@
   position: fixed;
   left: 0;
   top: calc((100% - 300px) / 2);
+
+  .footer {
+    #button_add {
+      left: 3px;
+    }
+
+    #button_del {
+      left: 30px;
+    }
+  }
 }
