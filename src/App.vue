@@ -127,9 +127,11 @@ export default {
       this.data = {
         version: 1,
         code: { main: "" },
+        data: [],
       };
       this.script = "main";
       this.scriptUpdate();
+      this.dataUpdate();
     },
     onMessage(data) {
       switch (data.type) {
@@ -142,6 +144,7 @@ export default {
           this.refEditor.set(this.data.code.main);
           this.script = "main";
           this.scriptUpdate();
+          this.dataUpdate();
           break;
         case "preview":
           this.refPreview.update(data.data);
@@ -178,6 +181,9 @@ export default {
       this.scriptChange("main");
       delete this.data["code"][key];
       this.scriptUpdate();
+    },
+    dataUpdate() {
+      this.refData.setFiles(Object.keys(this.data.data));
     },
     previewPlay() {
       this.data["code"][this.script] = this.refEditor.get();
