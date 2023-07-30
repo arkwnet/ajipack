@@ -1,7 +1,16 @@
 <template>
   <div class="panel data">
     <div class="header">データ管理</div>
-    <div class="main scroll"></div>
+    <div class="main scroll">
+      <div class="list">
+        <div v-for="file in files" :key="file.name">
+          <div class="item">
+            <div class="icon"></div>
+            <div class="text">{{ file.name }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="footer">
       <div class="button" id="button_add" @click="add()">
         <img src="../assets/img/add.svg" />
@@ -18,7 +27,9 @@ import { defineComponent, shallowRef } from "vue";
 
 export default defineComponent({
   data() {
-    return {};
+    return {
+      files: [],
+    };
   },
   setup() {
     const view = shallowRef();
@@ -31,6 +42,9 @@ export default defineComponent({
     };
   },
   methods: {
+    setFiles(files) {
+      this.files = files;
+    },
     add() {
       //
     },

@@ -5,6 +5,40 @@
   left: 0;
   top: calc((100% - 300px) / 2);
 
+  .main {
+    padding: 3px 5px;
+
+    .list {
+      .item {
+        width: 94px;
+        height: 80px;
+        margin-right: 3px;
+        margin-bottom: 3px;
+        padding: 0 5px 3px 5px;
+        color: #000;
+        border-radius: 5px;
+        list-style-type: none;
+        float: left;
+
+        .icon {
+          width: 80px;
+          height: 48px;
+          margin-left: 10px;
+          margin-top: 6px;
+        }
+
+        .text {
+          text-align: center;
+        }
+
+        &:hover {
+          background-color: #e0e0e0;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
   .footer {
     #button_add {
       left: 3px;
