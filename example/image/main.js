@@ -24,3 +24,9 @@ async function setup() {
     h * ratio
   );
 }
+
+function loop() {
+  if (ajiClick() == true) {
+    window.open(ajiGetData("image"));
+  }
+}
