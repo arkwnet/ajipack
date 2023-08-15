@@ -75,12 +75,45 @@ function ajiSetFillColor(color) {
   ajiContext.fillStyle = color;
 }
 
+function ajiSetStrokeColor(color) {
+  ajiContext.strokeStyle = color;
+}
+
+function ajiSetLineCap(cap) {
+  ajiContext.lineCap = cap;
+}
+
+function ajiSetLineWidth(width) {
+  ajiContext.lineWidth = width;
+}
+
 function ajiSetFont(font) {
   ajiContext.font = font;
 }
 
-function ajiFillRect(x, y, w, h) {
+function ajiFillRect(x, y, w, h, color) {
+  ajiSetFillColor(color);
   ajiContext.fillRect(x, y, w, h);
+}
+
+function ajiFillCircle(x, y, w, h, color) {
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const rx = w / 2;
+  const ry = h / 2;
+  ajiContext.beginPath();
+  ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ajiSetFillColor(color);
+  ajiContext.fill();
+}
+
+function ajiLine(x1, y1, x2, y2, color, width) {
+  ajiContext.beginPath();
+  ajiContext.moveTo(x1, y1);
+  ajiContext.lineTo(x2, y2);
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.stroke();
 }
 
 function ajiDrawText(text, x, y) {
