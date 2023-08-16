@@ -138,6 +138,18 @@ function ajiDrawText(text, x, y) {
   ajiContext.fillText(text, x, y);
 }
 
+function ajiDrawAlignText(text, x, y, w, align) {
+  if (align == "center") {
+    ajiContext.fillText(
+      text,
+      x + (w - ajiContext.measureText(text).width) / 2,
+      y
+    );
+  } else if (align == "right") {
+    ajiContext.fillText(text, x + w - ajiContext.measureText(text).width, y);
+  }
+}
+
 async function ajiSetBG(id, src) {
   if (ajiExistData(src) == true) {
     await new Promise((resolve, reject) => {

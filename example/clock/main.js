@@ -58,4 +58,8 @@ function loop() {
     "#ff0000",
     2
   );
+  ajiSetFont("14px sans-serif");
+  ajiSetFillColor("black");
+  ajiDrawAlignText(date.toLocaleDateString(), 0, 180, AJIPACK_WIDTH, "center");
+  ajiDrawAlignText(date.toLocaleTimeString(), 0, 200, AJIPACK_WIDTH, "center");
 }
