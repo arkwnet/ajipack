@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  frontend:
+    image: node:lts-buster-slim
+    command: sh -c "npm run dev"
+    ports:
+      - 3001:5173
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    stdin_open: true
+    tty: true
+  backend:
+    image: php:8.2-apache
+    ports:
+      - 3002:80
+    volumes:
+      - ./backend:/var/www/html
