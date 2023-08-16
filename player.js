@@ -96,6 +96,12 @@ function ajiFillRect(x, y, w, h, color) {
   ajiContext.fillRect(x, y, w, h);
 }
 
+function ajiStrokeRect(x, y, w, h, color, width) {
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.strokeRect(x, y, w, h);
+}
+
 function ajiFillCircle(x, y, w, h, color) {
   const cx = x + w / 2;
   const cy = y + h / 2;
@@ -105,6 +111,18 @@ function ajiFillCircle(x, y, w, h, color) {
   ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
   ajiSetFillColor(color);
   ajiContext.fill();
+}
+
+function ajiStrokeCircle(x, y, w, h, color, width) {
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const rx = w / 2;
+  const ry = h / 2;
+  ajiContext.beginPath();
+  ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.stroke();
 }
 
 function ajiLine(x1, y1, x2, y2, color, width) {
