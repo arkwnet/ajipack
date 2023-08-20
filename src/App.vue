@@ -6,7 +6,7 @@
     @add="scriptAdd"
     @delete="scriptDelete"
   ></Script>
-  <Data ref="refData"></Data>
+  <Data ref="refData" @add="dataAdd" @delete="dataDelete"></Data>
   <Preview ref="refPreview" @play="previewPlay"></Preview>
   <Cover v-if="isCover"></Cover>
   <ScriptDialog
@@ -117,6 +117,18 @@ export default {
     },
     generatePackage() {
       let data = "";
+      if (this.data.data.length >= 1) {
+        data += "const ajiData = [";
+        for (let i = 0; i < this.data.data.length; i++) {
+          data +=
+            '{ id: "' +
+            this.data.data[i].name +
+            '", data: "' +
+            this.data.data[i].base64 +
+            '"}';
+        }
+        data += "];\n";
+      }
       const keys = Object.keys(this.data.code);
       for (let i = 0; i < keys.length; i++) {
         data += this.data["code"][keys[i]] += "\n";
@@ -148,6 +160,22 @@ export default {
           break;
         case "preview":
           this.refPreview.update(data.data);
+          break;
+        case "data":
+          this.data.data.push();
+          for (let i = 0; i < this.data.data.length; i++) {
+            if (this.data.data[i].name == data.data.name) {
+              alert("既に同名のデータが存在します");
+              break;
+            }
+          }
+          if (this.data["data"][data.data.name] == undefined) {
+            this.data.data.push({
+              name: data.data.name,
+              base64: data.data.base64,
+            });
+            this.dataUpdate();
+          }
           break;
       }
     },
@@ -183,7 +211,20 @@ export default {
       this.scriptUpdate();
     },
     dataUpdate() {
-      this.refData.setFiles(Object.keys(this.data.data));
+      this.refData.setFiles(this.data.data);
+      this.refData.setSelected("");
+    },
+    dataAdd() {
+      ipcRenderer.send("addData", null);
+    },
+    dataDelete(key) {
+      for (let i = 0; i < this.data.data.length; i++) {
+        if (this.data.data[i].name == key) {
+          this.data.data.splice(i, 1);
+          break;
+        }
+      }
+      this.dataUpdate();
     },
     previewPlay() {
       this.data["code"][this.script] = this.refEditor.get();

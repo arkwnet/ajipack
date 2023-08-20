@@ -194,6 +194,9 @@ app.on("ready", async () => {
   ipcMain.on("exportPreview", (event, message) => {
     exportPreview(message);
   });
+  ipcMain.on("addData", () => {
+    addData();
+  });
   ipcMain.on("test", (event, message) => {
     console.log(message);
   });
@@ -288,5 +291,32 @@ async function exportPreview(message) {
   await win.webContents.send("message", {
     type: "preview",
     data: "file://" + cwd + "/preview/index.html",
+  });
+}
+
+async function addData() {
+  const result = await dialog.showOpenDialog(win, {
+    buttonLabel: "開く",
+    properties: ["openFile", "createDirectory"],
+    filters: [
+      {
+        name: "Documents",
+        extensions: ["png"],
+      },
+    ],
+  });
+  if (result.canceled) {
+    return;
+  }
+  const filePathArray = result.filePaths[0].replaceAll("\\", "/").split("/");
+  const fileNameArray = filePathArray[filePathArray.length - 1].split(".");
+  const data = fs.readFileSync(result.filePaths[0]);
+  const base64 = new Buffer(data).toString("base64");
+  await win.webContents.send("message", {
+    type: "data",
+    data: {
+      name: fileNameArray[0],
+      base64: "data:image/png;base64," + base64,
+    },
   });
 }
