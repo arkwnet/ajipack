@@ -5,41 +5,34 @@
       <table>
         <tr>
           <th>名前</th>
-          <td><input type="text" /></td>
+          <td><input type="text" v-model="name" /></td>
         </tr>
         <tr>
           <th>メッセージ</th>
-          <td><textarea></textarea></td>
+          <td>
+            <textarea v-model="message"></textarea>
+          </td>
         </tr>
         <tr>
           <th>ファイル</th>
           <td>
-            <input type="file" />
+            <input type="file" @change="readFile" />
             <div id="file_message">未選択</div>
           </td>
         </tr>
       </table>
-      <button class="submit">投稿</button>
+      <button class="submit" @click="post">投稿</button>
     </div>
     <div class="list">
-      <div class="item">
+      <div class="item" v-for="item in list">
         <p>
-          名前: 名無し / 投稿日時: 2023/08/17 23:26:00<br />
-          こんにちは! これはサンプル投稿です。
+          名前: {{ item.name }} / 投稿日時: {{ new Date(item.timestamp * 1000) }}<br />
+          {{ item.message }}
         </p>
         <p>
-          <iframe src="http://localhost:3002/phpinfo.php"></iframe>
+          <iframe :src="`http://localhost:3002/files/${item.id}.html`"></iframe>
         </p>
-      </div>
-      <hr />
-      <div class="item">
-        <p>
-          名前: 名無し / 投稿日時: 2023/08/17 23:26:00<br />
-          こんにちは! これはサンプル投稿です。
-        </p>
-        <p>
-          <iframe src="http://localhost:3002/phpinfo.php"></iframe>
-        </p>
+        <hr />
       </div>
     </div>
   </div>
@@ -107,3 +100,44 @@
   border: solid 1px #757575;
 }
 </style>
+
+<script setup>
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
+
+const name = ref('')
+const message = ref('')
+const file = ref('')
+const list = ref(new Array())
+
+onMounted(() => {
+  load()
+})
+
+const post = async () => {
+  const result = await axios.post('/api/post.php', {
+    params: { name: name.value, message: message.value, file: file.value }
+  })
+  if (result.data.status == false) {
+    alert('投稿に失敗しました。')
+  } else {
+    name.value = ''
+    message.value = ''
+    load()
+  }
+}
+
+const load = async () => {
+  const result = await axios.get('/api/get.php', {})
+  list.value = result.data
+}
+
+const readFile = (e) => {
+  const f = e.target.files[0]
+  const reader = new FileReader()
+  reader.onload = function () {
+    file.value = reader.result
+  }
+  reader.readAsText(f)
+}
+</script>

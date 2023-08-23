@@ -26,4 +26,6 @@ pnpm-debug.log*
 /dist_electron
 
 /board/backend/db/*.db
+/board/backend/files/*.html
+/board/backend/files/*.js
 /preview/js/preview.js
