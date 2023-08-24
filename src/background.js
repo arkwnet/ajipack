@@ -295,13 +295,22 @@ async function exportPreview(message) {
 }
 
 async function addData() {
+  const mime = {
+    png: "image/png",
+    jpeg: "image/jpeg",
+    jpg: "image/jpeg",
+    wav: "audio/wave",
+    ogg: "audio/ogg",
+    mp3: "audio/mpeg",
+    mp4: "video/mp4",
+  };
   const result = await dialog.showOpenDialog(win, {
     buttonLabel: "開く",
     properties: ["openFile", "createDirectory"],
     filters: [
       {
         name: "Documents",
-        extensions: ["png"],
+        extensions: ["png", "jpeg", "jpg", "wav", "ogg", "mp3", "mp4"],
       },
     ],
   });
@@ -316,7 +325,7 @@ async function addData() {
     type: "data",
     data: {
       name: fileNameArray[0],
-      base64: "data:image/png;base64," + base64,
+      base64: "data:" + mime[fileNameArray[1]] + ";base64," + base64,
     },
   });
 }
