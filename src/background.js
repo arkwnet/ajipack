@@ -285,7 +285,13 @@ async function exportProject(message) {
 }
 
 async function exportPreview(message) {
-  fs.writeFileSync(process.cwd() + "\\preview\\js\\preview.js", message.data);
+  let path;
+  if (process.platform == "win32") {
+    path = process.cwd() + "\\preview\\js\\preview.js";
+  } else {
+    path = process.cwd() + "/preview/js/preview.js";
+  }
+  fs.writeFileSync(path, message.data);
   let cwd = process.cwd();
   cwd.replaceAll("\\", "/");
   await win.webContents.send("message", {
