@@ -233,6 +233,7 @@ async function ajiAddAudio(id, src) {
     ajiAudio.push({
       id: id,
       buffer: null,
+      source: null,
     });
     await ajiSetAudio(id, src);
   }
@@ -280,10 +281,15 @@ function ajiFindAudioNumber(id) {
 }
 
 function ajiPlayAudio(id) {
-  let audioSource = ajiAudioContext.createBufferSource();
-  audioSource.buffer = ajiAudio[ajiFindAudioNumber(id)].buffer;
-  audioSource.connect(ajiAudioContext.destination);
-  audioSource.start(0);
+  const number = ajiFindAudioNumber(id);
+  ajiAudio[number].source = ajiAudioContext.createBufferSource();
+  ajiAudio[number].source.buffer = ajiAudio[number].buffer;
+  ajiAudio[number].source.connect(ajiAudioContext.destination);
+  ajiAudio[number].source.start(0);
+}
+
+function ajiStopAudio(id) {
+  ajiAudio[ajiFindAudioNumber(id)].source.stop();
 }
 
 function ajiMouseX() {
