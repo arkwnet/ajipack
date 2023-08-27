@@ -319,6 +319,18 @@ function ajiUpdateVideo() {
   ajiContext.drawImage(ajiVideo, 0, 0, 320, 240);
 }
 
+function ajiGetVideoDuration() {
+  return ajiVideo.duration;
+}
+
+function ajiGetVideoCurrentTime() {
+  return ajiVideo.currentTime;
+}
+
+function ajiSetVideoCurrentTime(time) {
+  ajiVideo.currentTime = time;
+}
+
 function ajiMouseX() {
   return ajiMouse.x;
 }
