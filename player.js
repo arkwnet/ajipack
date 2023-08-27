@@ -8,7 +8,7 @@ const AJIPACK_WIDTH = 320;
 const AJIPACK_HEIGHT = 240;
 const AJIPACK_FPS = 33.0;
 let ajiDrawTime = Date.now();
-let ajiCanvas, ajiContext;
+let ajiCanvas, ajiContext, ajiVideo;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
 let ajiSprite = [];
 let ajiAudioContext = new AudioContext();
@@ -30,6 +30,11 @@ function ajiInit() {
   ajiContext.fillStyle = "#000";
   ajiContext.fillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
   document.body.appendChild(ajiCanvas);
+  ajiVideo = document.createElement("video");
+  ajiVideo.width = 320;
+  ajiVideo.height = 240;
+  ajiVideo.style.display = "none";
+  document.body.appendChild(ajiVideo);
   if (typeof setup == "function") {
     setup();
   }
@@ -290,6 +295,28 @@ function ajiPlayAudio(id) {
 
 function ajiStopAudio(id) {
   ajiAudio[ajiFindAudioNumber(id)].source.stop();
+}
+
+async function ajiLoadVideo(src) {
+  if (ajiExistData(src) == true) {
+    await new Promise((resolve, reject) => {
+      ajiVideo.onload = () => resolve(ajiVideo);
+      ajiVideo.onerror = (e) => reject(e);
+      ajiVideo.src = ajiGetData(src);
+    });
+  }
+}
+
+function ajiPlayVideo() {
+  ajiVideo.play();
+}
+
+function ajiStopVideo() {
+  ajiVideo.pause();
+}
+
+function ajiUpdateVideo() {
+  ajiContext.drawImage(ajiVideo, 0, 0, 320, 240);
 }
 
 function ajiMouseX() {
