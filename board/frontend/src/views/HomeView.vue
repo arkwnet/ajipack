@@ -5,18 +5,18 @@
       <table>
         <tr>
           <th>名前</th>
-          <td><input type="text" v-model="name" /></td>
+          <td><input type="text" id="input_name" v-model="name" /></td>
         </tr>
         <tr>
           <th>メッセージ</th>
           <td>
-            <textarea v-model="message"></textarea>
+            <textarea id="input_message" v-model="message"></textarea>
           </td>
         </tr>
         <tr>
           <th>ファイル</th>
           <td>
-            <input type="file" @change="readFile" />
+            <input type="file" id="input_file" @change="readFile" />
             <div id="file_message">対応フォーマット : Ajipack パッケージ (*.js)</div>
           </td>
         </tr>
