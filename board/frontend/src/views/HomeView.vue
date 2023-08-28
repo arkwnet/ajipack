@@ -38,69 +38,6 @@
   </div>
 </template>
 
-<style>
-.main {
-  width: 1000px;
-  margin: auto;
-}
-
-.main h1.title {
-  margin-top: 24px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #757575;
-}
-
-.post {
-  margin: 20px 0;
-  padding: 20px;
-  border: solid 2px #757575;
-  border-radius: 10px;
-}
-
-.post th,
-.post td {
-  padding-bottom: 10px;
-}
-
-.post th {
-  padding-right: 20px;
-  text-align: left;
-}
-
-.post #file_message {
-  margin-top: 5px;
-  color: #757575;
-}
-
-.post .submit {
-  margin: 10px 0;
-  padding: 5px 15px;
-}
-
-.list {
-  margin-top: 20px;
-  margin-bottom: 40px;
-}
-
-.list hr {
-  height: 1px;
-  margin: 20px 0;
-  background-color: #757575;
-  border: 0;
-}
-
-.list p {
-  margin-bottom: 10px;
-}
-
-.list iframe {
-  width: 320px;
-  height: 240px;
-  border: solid 1px #757575;
-}
-</style>
-
 <script setup>
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
@@ -143,3 +80,7 @@ const readFile = (e) => {
   reader.readAsText(f)
 }
 </script>
+
+<style lang="scss">
+@import url(../assets/HomeView.scss);
+</style>
