@@ -17,7 +17,9 @@
           <th>ファイル</th>
           <td>
             <input type="file" id="input_file" @change="readFile" />
-            <div id="file_message">対応フォーマット : Ajipack パッケージ (*.js)</div>
+            <div id="file_message">
+              対応フォーマット : Ajipack パッケージ (*.js) / 画像ファイル (*.jpg, png)
+            </div>
           </td>
         </tr>
       </table>
@@ -75,9 +77,48 @@ const readFile = (e) => {
   const f = e.target.files[0]
   const reader = new FileReader()
   reader.onload = function () {
-    file.value = reader.result
+    if (f.type == 'application/x-javascript') {
+      file.value = reader.result
+    } else if (f.type == 'image/jpeg' || f.type == 'image/png') {
+      file.value = `const ajiData = [
+  {
+    id: "image",
+    data: "${reader.result}",
+  },
+];
+
+async function setup() {
+  await ajiAddSprite("image", "image");
+  const image = ajiGetSprite("image");
+  const w = image.width;
+  const h = image.height;
+  let ratio = 1.0;
+  if (w < h) {
+    ratio = 240 / h;
+  } else {
+    ratio = 320 / w;
   }
-  reader.readAsText(f)
+  ajiDrawSpriteZoom(
+    "image",
+    160 - (w * ratio) / 2,
+    120 - (h * ratio) / 2,
+    w * ratio,
+    h * ratio
+  );
+}
+
+function loop() {
+  if (ajiClick() == true) {
+    window.open(ajiGetData("image"));
+  }
+}`
+    }
+  }
+  if (f.type == 'application/x-javascript') {
+    reader.readAsText(f)
+  } else {
+    reader.readAsDataURL(f)
+  }
 }
 </script>
 
