@@ -331,6 +331,7 @@ async function addData() {
     type: "data",
     data: {
       name: fileNameArray[0],
+      type: mime[fileNameArray[1]],
       base64: "data:" + mime[fileNameArray[1]] + ";base64," + base64,
     },
   });

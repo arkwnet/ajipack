@@ -6,13 +6,51 @@
         <div v-for="file in files" :key="file.name" @click="click(file.name)">
           <div v-if="file.name == selected">
             <div class="item selected">
-              <div class="icon"><img :src="file.base64" /></div>
+              <div class="icon">
+                <img v-if="file.type == 'image/png'" :src="file.base64" />
+                <img v-else-if="file.type == 'image/jpeg'" :src="file.base64" />
+                <img
+                  v-else-if="file.type == 'audio/wave'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'audio/ogg'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'audio/mpeg'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'video/mp4'"
+                  src="../assets/img/video.png"
+                />
+              </div>
               <div class="text">{{ file.name }}</div>
             </div>
           </div>
           <div v-else>
             <div class="item">
-              <div class="icon"><img :src="file.base64" /></div>
+              <div class="icon">
+                <img v-if="file.type == 'image/png'" :src="file.base64" />
+                <img v-else-if="file.type == 'image/jpeg'" :src="file.base64" />
+                <img
+                  v-else-if="file.type == 'audio/wave'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'audio/ogg'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'audio/mpeg'"
+                  src="../assets/img/audio.png"
+                />
+                <img
+                  v-else-if="file.type == 'video/mp4'"
+                  src="../assets/img/video.png"
+                />
+              </div>
               <div class="text">{{ file.name }}</div>
             </div>
           </div>

@@ -172,6 +172,7 @@ export default {
           if (this.data["data"][data.data.name] == undefined) {
             this.data.data.push({
               name: data.data.name,
+              type: data.data.type,
               base64: data.data.base64,
             });
             this.dataUpdate();
