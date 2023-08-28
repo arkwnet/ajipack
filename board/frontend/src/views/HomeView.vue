@@ -17,7 +17,7 @@
           <th>ファイル</th>
           <td>
             <input type="file" @change="readFile" />
-            <div id="file_message">未選択</div>
+            <div id="file_message">対応フォーマット : Ajipack パッケージ (*.js)</div>
           </td>
         </tr>
       </table>
@@ -30,7 +30,7 @@
           {{ item.message }}
         </p>
         <p>
-          <iframe :src="`http://localhost:3002/files/${item.id}.html`"></iframe>
+          <iframe :src="`${url}files/${item.id}.html`"></iframe>
         </p>
         <hr />
       </div>
@@ -109,13 +109,15 @@ const name = ref('')
 const message = ref('')
 const file = ref('')
 const list = ref(new Array())
+const url = ref('')
 
 onMounted(() => {
   load()
+  url.value = import.meta.env.VITE_BACKEND_URL
 })
 
 const post = async () => {
-  const result = await axios.post('/api/post.php', {
+  const result = await axios.post(import.meta.env.VITE_BACKEND_URL + 'post.php', {
     params: { name: name.value, message: message.value, file: file.value }
   })
   if (result.data.status == false) {
@@ -128,7 +130,7 @@ const post = async () => {
 }
 
 const load = async () => {
-  const result = await axios.get('/api/get.php', {})
+  const result = await axios.get(import.meta.env.VITE_BACKEND_URL + 'get.php', {})
   list.value = result.data
 }
 
