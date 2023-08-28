@@ -7,6 +7,7 @@ Licensed under the MIT License
 const AJIPACK_WIDTH = 320;
 const AJIPACK_HEIGHT = 240;
 const AJIPACK_FPS = 33.0;
+let ajiDate = new Date();
 let ajiDrawTime = Date.now();
 let ajiCanvas, ajiContext, ajiVideo;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
@@ -44,6 +45,7 @@ function ajiInit() {
 }
 
 function ajiMain() {
+  ajiDate = new Date();
   const ajiNowTime = Date.now();
   if (ajiNowTime - ajiDrawTime >= 1000 / AJIPACK_FPS) {
     ajiDrawTime = ajiNowTime;
@@ -155,6 +157,8 @@ function ajiDrawAlignText(text, x, y, w, align) {
   }
 }
 
+// BG
+
 async function ajiSetBG(id, src) {
   if (ajiExistData(src) == true) {
     await new Promise((resolve, reject) => {
@@ -178,6 +182,8 @@ async function ajiAddSprite(id, src) {
     await ajiSetSprite(id, src);
   }
 }
+
+// Sprite
 
 function ajiGetSprite(id) {
   for (let i = 0; i < ajiSprite.length; i++) {
@@ -232,6 +238,8 @@ function ajiDrawSpriteZoom(id, x, y, w, h) {
     ajiContext.drawImage(ajiSprite[ajiFindSpriteNumber(id)].image, x, y, w, h);
   }
 }
+
+// Audio
 
 async function ajiAddAudio(id, src) {
   if (ajiExistAudio(id) == false) {
@@ -297,6 +305,8 @@ function ajiStopAudio(id) {
   ajiAudio[ajiFindAudioNumber(id)].source.stop();
 }
 
+// Video
+
 async function ajiLoadVideo(src) {
   if (ajiExistData(src) == true) {
     await new Promise((resolve, reject) => {
@@ -331,6 +341,8 @@ function ajiSetVideoCurrentTime(time) {
   ajiVideo.currentTime = time;
 }
 
+// Mouse
+
 function ajiMouseX() {
   return ajiMouse.x;
 }
@@ -356,4 +368,42 @@ function ajiClick() {
   } else {
     return false;
   }
+}
+
+// Date & Time
+
+function ajiGetYear() {
+  return ajiDate.getFullYear();
+}
+
+function ajiGetMonth() {
+  return ajiDate.getMonth() + 1;
+}
+
+function ajiGetDate() {
+  return ajiDate.getDate();
+}
+
+function ajiGetDay() {
+  return ajiDate.getDay();
+}
+
+function ajiGetHours() {
+  return ajiDate.getHours();
+}
+
+function ajiGetMinutes() {
+  return ajiDate.getMinutes();
+}
+
+function ajiGetSeconds() {
+  return ajiDate.getSeconds();
+}
+
+function ajiGetDateString() {
+  return ajiDate.toLocaleDateString();
+}
+
+function ajiGetTimeString() {
+  return ajiDate.toLocaleTimeString();
 }
