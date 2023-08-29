@@ -1,6 +1,7 @@
 function loop() {
   ajiSetLineCap("round");
-  ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT, "#ffffcc");
+  ajiSetFillColor("#ffffcc");
+  ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
   ajiFillCircle(
     AJIPACK_WIDTH / 2 - AJIPACK_HEIGHT / 2 + 10,
     10,

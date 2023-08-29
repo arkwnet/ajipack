@@ -98,8 +98,7 @@ function ajiSetFont(font) {
   ajiContext.font = font;
 }
 
-function ajiFillRect(x, y, w, h, color) {
-  ajiSetFillColor(color);
+function ajiFillRect(x, y, w, h) {
   ajiContext.fillRect(x, y, w, h);
 }
 
