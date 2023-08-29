@@ -8,4 +8,4 @@ Ajipack は Web 掲示板や SNS において、画像・音楽・動画・ゲ�
 # License
 
 MIT License  
-Copyright (c) 2023 Sora Arakawa
+詳細は `LICENSE` ファイルをご確認ください。
