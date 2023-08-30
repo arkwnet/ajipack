@@ -39,6 +39,8 @@ function ajiInit() {
   if (typeof setup == "function") {
     setup();
   }
+  ajiCanvas.addEventListener("touchstart", ajiMouseDown, false);
+  ajiCanvas.addEventListener("touchend", ajiMouseUp);
   ajiCanvas.addEventListener("mousedown", ajiMouseDown, false);
   ajiCanvas.addEventListener("mouseup", ajiMouseUp);
   ajiMain();
@@ -52,7 +54,11 @@ function ajiMain() {
     if (ajiMouse.flag == true) {
       ajiMouse.count++;
     } else {
-      ajiMouse.count = 0;
+      if (ajiMouse.count == 1 || ajiMouse.count == 2) {
+        ajiMouse.count++;
+      } else {
+        ajiMouse.count = 0;
+      }
     }
     if (typeof loop == "function") {
       loop();
@@ -102,41 +108,34 @@ function ajiFillRect(x, y, w, h) {
   ajiContext.fillRect(x, y, w, h);
 }
 
-function ajiStrokeRect(x, y, w, h, color, width) {
-  ajiSetStrokeColor(color);
-  ajiSetLineWidth(width);
+function ajiStrokeRect(x, y, w, h) {
   ajiContext.strokeRect(x, y, w, h);
 }
 
-function ajiFillCircle(x, y, w, h, color) {
+function ajiFillCircle(x, y, w, h) {
   const cx = x + w / 2;
   const cy = y + h / 2;
   const rx = w / 2;
   const ry = h / 2;
   ajiContext.beginPath();
   ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-  ajiSetFillColor(color);
   ajiContext.fill();
 }
 
-function ajiStrokeCircle(x, y, w, h, color, width) {
+function ajiStrokeCircle(x, y, w, h) {
   const cx = x + w / 2;
   const cy = y + h / 2;
   const rx = w / 2;
   const ry = h / 2;
   ajiContext.beginPath();
   ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-  ajiSetStrokeColor(color);
-  ajiSetLineWidth(width);
   ajiContext.stroke();
 }
 
-function ajiLine(x1, y1, x2, y2, color, width) {
+function ajiLine(x1, y1, x2, y2) {
   ajiContext.beginPath();
   ajiContext.moveTo(x1, y1);
   ajiContext.lineTo(x2, y2);
-  ajiSetStrokeColor(color);
-  ajiSetLineWidth(width);
   ajiContext.stroke();
 }
 
@@ -172,6 +171,8 @@ function ajiDrawBG(id, x, y) {
   ajiContext.drawImage(ajiBG[id], x, y, AJIPACK_WIDTH, AJIPACK_HEIGHT);
 }
 
+// Sprite
+
 async function ajiAddSprite(id, src) {
   if (ajiExistSprite(id) == false) {
     ajiSprite.push({
@@ -181,8 +182,6 @@ async function ajiAddSprite(id, src) {
     await ajiSetSprite(id, src);
   }
 }
-
-// Sprite
 
 function ajiGetSprite(id) {
   for (let i = 0; i < ajiSprite.length; i++) {
@@ -320,7 +319,7 @@ function ajiPlayVideo() {
   ajiVideo.play();
 }
 
-function ajiStopVideo() {
+function ajiPauseVideo() {
   ajiVideo.pause();
 }
 
@@ -351,9 +350,15 @@ function ajiMouseY() {
 }
 
 function ajiMouseDown(e) {
-  const rect = e.target.getBoundingClientRect();
-  ajiMouse.x = e.clientX - rect.left;
-  ajiMouse.y = e.clientY - rect.top;
+  if (e.touches != undefined) {
+    e.preventDefault();
+    ajiMouse.x = e.touches[0].pageX;
+    ajiMouse.y = e.touches[0].pageY;
+  } else {
+    const rect = e.target.getBoundingClientRect();
+    ajiMouse.x = e.clientX - rect.left;
+    ajiMouse.y = e.clientY - rect.top;
+  }
   ajiMouse.flag = true;
 }
 
@@ -362,7 +367,7 @@ function ajiMouseUp() {
 }
 
 function ajiClick() {
-  if (ajiMouse.flag == true && ajiMouse.count == 1) {
+  if (ajiMouse.count == 1) {
     return true;
   } else {
     return false;

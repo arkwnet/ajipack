@@ -12,6 +12,15 @@ async function setup() {
 }
 
 async function loop() {
+  ajiSetFillColor("#006064");
+  ajiFillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
+  ajiSetFillColor("#fff");
+  ajiSetFont("24px sans-serif");
+  if (count == 0) {
+    ajiDrawAlignText("クリック/タッチで再生", 0, 180, AJIPACK_WIDTH, "center");
+  } else {
+    ajiDrawAlignText("クリック/タッチで停止", 0, 180, AJIPACK_WIDTH, "center");
+  }
   if (ajiClick() == true) {
     if (count == 0) {
       ajiPlayAudio("audio");
