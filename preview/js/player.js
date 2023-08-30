@@ -7,8 +7,9 @@ Licensed under the MIT License
 const AJIPACK_WIDTH = 320;
 const AJIPACK_HEIGHT = 240;
 const AJIPACK_FPS = 33.0;
+let ajiDate = new Date();
 let ajiDrawTime = Date.now();
-let ajiCanvas, ajiContext;
+let ajiCanvas, ajiContext, ajiVideo;
 let ajiBG = [new Image(), new Image(), new Image(), new Image()];
 let ajiSprite = [];
 let ajiAudioContext = new AudioContext();
@@ -30,6 +31,11 @@ function ajiInit() {
   ajiContext.fillStyle = "#000";
   ajiContext.fillRect(0, 0, AJIPACK_WIDTH, AJIPACK_HEIGHT);
   document.body.appendChild(ajiCanvas);
+  ajiVideo = document.createElement("video");
+  ajiVideo.width = 320;
+  ajiVideo.height = 240;
+  ajiVideo.style.display = "none";
+  document.body.appendChild(ajiVideo);
   if (typeof setup == "function") {
     setup();
   }
@@ -39,6 +45,7 @@ function ajiInit() {
 }
 
 function ajiMain() {
+  ajiDate = new Date();
   const ajiNowTime = Date.now();
   if (ajiNowTime - ajiDrawTime >= 1000 / AJIPACK_FPS) {
     ajiDrawTime = ajiNowTime;
@@ -75,6 +82,18 @@ function ajiSetFillColor(color) {
   ajiContext.fillStyle = color;
 }
 
+function ajiSetStrokeColor(color) {
+  ajiContext.strokeStyle = color;
+}
+
+function ajiSetLineCap(cap) {
+  ajiContext.lineCap = cap;
+}
+
+function ajiSetLineWidth(width) {
+  ajiContext.lineWidth = width;
+}
+
 function ajiSetFont(font) {
   ajiContext.font = font;
 }
@@ -83,9 +102,61 @@ function ajiFillRect(x, y, w, h) {
   ajiContext.fillRect(x, y, w, h);
 }
 
+function ajiStrokeRect(x, y, w, h, color, width) {
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.strokeRect(x, y, w, h);
+}
+
+function ajiFillCircle(x, y, w, h, color) {
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const rx = w / 2;
+  const ry = h / 2;
+  ajiContext.beginPath();
+  ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ajiSetFillColor(color);
+  ajiContext.fill();
+}
+
+function ajiStrokeCircle(x, y, w, h, color, width) {
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const rx = w / 2;
+  const ry = h / 2;
+  ajiContext.beginPath();
+  ajiContext.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.stroke();
+}
+
+function ajiLine(x1, y1, x2, y2, color, width) {
+  ajiContext.beginPath();
+  ajiContext.moveTo(x1, y1);
+  ajiContext.lineTo(x2, y2);
+  ajiSetStrokeColor(color);
+  ajiSetLineWidth(width);
+  ajiContext.stroke();
+}
+
 function ajiDrawText(text, x, y) {
   ajiContext.fillText(text, x, y);
 }
+
+function ajiDrawAlignText(text, x, y, w, align) {
+  if (align == "center") {
+    ajiContext.fillText(
+      text,
+      x + (w - ajiContext.measureText(text).width) / 2,
+      y
+    );
+  } else if (align == "right") {
+    ajiContext.fillText(text, x + w - ajiContext.measureText(text).width, y);
+  }
+}
+
+// BG
 
 async function ajiSetBG(id, src) {
   if (ajiExistData(src) == true) {
@@ -110,6 +181,8 @@ async function ajiAddSprite(id, src) {
     await ajiSetSprite(id, src);
   }
 }
+
+// Sprite
 
 function ajiGetSprite(id) {
   for (let i = 0; i < ajiSprite.length; i++) {
@@ -165,11 +238,14 @@ function ajiDrawSpriteZoom(id, x, y, w, h) {
   }
 }
 
+// Audio
+
 async function ajiAddAudio(id, src) {
   if (ajiExistAudio(id) == false) {
     ajiAudio.push({
       id: id,
       buffer: null,
+      source: null,
     });
     await ajiSetAudio(id, src);
   }
@@ -217,11 +293,54 @@ function ajiFindAudioNumber(id) {
 }
 
 function ajiPlayAudio(id) {
-  let audioSource = ajiAudioContext.createBufferSource();
-  audioSource.buffer = ajiAudio[ajiFindAudioNumber(id)].buffer;
-  audioSource.connect(ajiAudioContext.destination);
-  audioSource.start(0);
+  const number = ajiFindAudioNumber(id);
+  ajiAudio[number].source = ajiAudioContext.createBufferSource();
+  ajiAudio[number].source.buffer = ajiAudio[number].buffer;
+  ajiAudio[number].source.connect(ajiAudioContext.destination);
+  ajiAudio[number].source.start(0);
 }
+
+function ajiStopAudio(id) {
+  ajiAudio[ajiFindAudioNumber(id)].source.stop();
+}
+
+// Video
+
+async function ajiLoadVideo(src) {
+  if (ajiExistData(src) == true) {
+    await new Promise((resolve, reject) => {
+      ajiVideo.onload = () => resolve(ajiVideo);
+      ajiVideo.onerror = (e) => reject(e);
+      ajiVideo.src = ajiGetData(src);
+    });
+  }
+}
+
+function ajiPlayVideo() {
+  ajiVideo.play();
+}
+
+function ajiStopVideo() {
+  ajiVideo.pause();
+}
+
+function ajiUpdateVideo() {
+  ajiContext.drawImage(ajiVideo, 0, 0, 320, 240);
+}
+
+function ajiGetVideoDuration() {
+  return ajiVideo.duration;
+}
+
+function ajiGetVideoCurrentTime() {
+  return ajiVideo.currentTime;
+}
+
+function ajiSetVideoCurrentTime(time) {
+  ajiVideo.currentTime = time;
+}
+
+// Mouse
 
 function ajiMouseX() {
   return ajiMouse.x;
@@ -248,4 +367,42 @@ function ajiClick() {
   } else {
     return false;
   }
+}
+
+// Date & Time
+
+function ajiGetYear() {
+  return ajiDate.getFullYear();
+}
+
+function ajiGetMonth() {
+  return ajiDate.getMonth() + 1;
+}
+
+function ajiGetDate() {
+  return ajiDate.getDate();
+}
+
+function ajiGetDay() {
+  return ajiDate.getDay();
+}
+
+function ajiGetHours() {
+  return ajiDate.getHours();
+}
+
+function ajiGetMinutes() {
+  return ajiDate.getMinutes();
+}
+
+function ajiGetSeconds() {
+  return ajiDate.getSeconds();
+}
+
+function ajiGetDateString() {
+  return ajiDate.toLocaleDateString();
+}
+
+function ajiGetTimeString() {
+  return ajiDate.toLocaleTimeString();
 }

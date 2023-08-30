@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "NotoSansJPRegular", "sans-serif";
 }
 
 .panel {
@@ -63,9 +62,4 @@
       }
     }
   }
-}
-
-@font-face {
-  font-family: "NotoSansJPRegular";
-  src: url("@/assets/fonts/NotoSansJP-Regular.ttf");
 }

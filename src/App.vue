@@ -81,6 +81,7 @@ export default {
       this.test();
     });
     this.updateTitle();
+    this.previewPlay();
   },
   methods: {
     test() {
@@ -91,6 +92,7 @@ export default {
       this.initData();
       this.refEditor.clear();
       this.updateTitle();
+      this.previewPlay();
     },
     openProject() {
       ipcRenderer.send("openProject", null);
@@ -157,6 +159,7 @@ export default {
           this.script = "main";
           this.scriptUpdate();
           this.dataUpdate();
+          this.previewPlay();
           break;
         case "preview":
           this.refPreview.update(data.data);
