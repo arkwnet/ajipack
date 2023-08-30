@@ -127,7 +127,7 @@ export default {
             this.data.data[i].name +
             '", data: "' +
             this.data.data[i].base64 +
-            '"}';
+            '"},';
         }
         data += "];\n";
       }
